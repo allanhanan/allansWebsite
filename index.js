@@ -9,12 +9,15 @@ const plyrUp = new Image()
 const plyrLeft = new Image()
 const plyrRight = new Image()
 const loading = new Image()
+var audio = new Audio("./assets/bgmsc.mp3")
+audio.loop = true
+audio.volume = 0.5
 
 
 
 loading.src = './assets/loading.png'
 plyr.src = './assets/playerDown.png'
-plyrUp.src = 'https://cdn.discordapp.com/attachments/990279097366245439/1236333362608865392/playerUp.png?ex=6637a0ab&is=66364f2b&hm=f7ec56c999e89ac7453870c17c0e80e72844da673bdd04c96de5bc2c90274366&'                     //plyrUp.src = './assets/playerUP.png'
+plyrUp.src = 'https://cdn.discordapp.com/attachments/990279097366245439/1236333362608865392/playerUp.png?ex=6637a0ab&is=66364f2b&hm=f7ec56c999e89ac7453870c17c0e80e72844da673bdd04c96de5bc2c90274366&'
 plyrLeft.src = './assets/playerLeft.png'
 plyrRight.src = './assets/playerRight.png'
 baground.src = './assets/spcBGts.png'
@@ -25,6 +28,8 @@ canvas.height = window.innerHeight
 
 ctx.drawImage(loading,0,0)
 let clicked = false
+audio.load()
+
 
 
 class Sprite{
@@ -136,7 +141,6 @@ function animate(){
     if (colltest({rect1: player, rect2: git})){
         console.log('colliding')
         window.location.href = "https://github.com/allanhanan";
-
     }
 
     player.moving = false
@@ -213,14 +217,7 @@ window.addEventListener('keyup', (e) => {
 
 addEventListener('click', () => {
   if (!clicked) {
-    var sound = new Howl({
-        src: ['./assets/bgmsc'],
-        volume: 0.5,
-        onend: function () {
-          sound.play();
-        }
-      });    
-    sound.play()
+    audio.play()
     clicked = true
     console.log('clicked')
   }
