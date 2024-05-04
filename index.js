@@ -14,7 +14,7 @@ const loading = new Image()
 
 loading.src = './assets/loading.png'
 plyr.src = './assets/playerDown.png'
-plyrUp.src = './assets/playerUP.png'
+plyrUp.src = 'https://cdn.discordapp.com/attachments/990279097366245439/1236333362608865392/playerUp.png?ex=6637a0ab&is=66364f2b&hm=f7ec56c999e89ac7453870c17c0e80e72844da673bdd04c96de5bc2c90274366&'                     //plyrUp.src = './assets/playerUP.png'
 plyrLeft.src = './assets/playerLeft.png'
 plyrRight.src = './assets/playerRight.png'
 baground.src = './assets/spcBGts.png'
