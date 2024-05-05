@@ -30,6 +30,7 @@ canvas.height = window.innerHeight
 
 ctx.drawImage(loading,0,0)
 let clicked = false
+let collisionFlag = false
 audio.load()
 
 
@@ -147,28 +148,48 @@ function colltest({rect1, rect2}){
 
 }
 
+
 function showConfirmation(message) {
     return new Promise((resolve) => {
-        const modal = document.getElementById("confirmationModal")
-        const messageElement = document.getElementById("confirmationMessage")
-        const confirmButton = document.getElementById("confirmButton")
-        const cancelButton = document.getElementById("cancelButton")
+      const modal = document.getElementById("confirmationModal")
+      const confirmButton = document.getElementById("confirmButton")
+      const cancelButton = document.getElementById("cancelButton")
 
-        messageElement.textContent = message
+      document.getElementById("confirmationMessage").textContent = message
+      modal.style.display = "block"
 
-        modal.style.display = "block"
+      confirmButton.focus()
 
-        confirmButton.onclick = function() {
-            modal.style.display = "none"
-            resolve(true)
-        };
-
-        cancelButton.onclick = function() {
-            modal.style.display = "none"
-            resolve(false)
+      function handleKeyDown(event) {
+        if (event.key === "ArrowRight") {
+            console.log("right")
+            event.preventDefault()
+            cancelButton.focus()
+        } else if (event.key === "ArrowLeft") {
+            console.log('left')
+            event.preventDefault()
+             confirmButton.focus()
+        } else if (event.key === "Enter") {
+             modal.style.display = "none"
+             resolve(document.activeElement === confirmButton)
         }
+      }
+  
+      window.addEventListener("keydown", handleKeyDown);
+  
+      confirmButton.addEventListener("click", () => {
+        modal.style.display = "none"
+        resolve(true)
+      })
+  
+      cancelButton.addEventListener("click", () => {
+        modal.style.display = "none"
+        resolve(false);
+      })
     })
-}
+  }
+  
+
 
 function animate(){
 
@@ -178,36 +199,44 @@ function animate(){
     player.draw()
     ig.draw()
 
-    if (colltest({rect1: player, rect2: git})){
-        console.log('colliding')
-        showConfirmation("Do you want to proceed?").then((result) => {
-            if (result) {
-                console.log("User clicked Yes. Proceeding...")
-                window.location.href = "https://github.com/allanhanan"
-            } else {
-                console.log("User clicked No. Canceling...")
-                while(colltest({rect1: player, rect2: git})){
-                      movables.forEach(movable => {movable.position.y += 0.05})
-                }
+    if (!collisionFlag){
+        if (colltest({rect1: player, rect2: git})){
+            collisionFlag = true
+            console.log('colliding')
+            showConfirmation("Do you want to proceed?").then((result) => {
+                if (result) {
+                    console.log("User clicked Yes. Proceeding...")
+                    window.location.href = "https://github.com/allanhanan"
+                } else {
+                    console.log("User clicked No. Canceling...")
+                    collisionFlag = false
+                    while(colltest({rect1: player, rect2: git})){
+                        movables.forEach(movable => {movable.position.y += 0.05})
+                    }
 
-            }
-        })
+                }
+            })
+        }
     }
 
-    if (colltest({rect1: player, rect2: ig})){
-        console.log('colliding')
-        showConfirmation("Do you want to proceed?").then((result) => {
-            if (result) {
-                console.log("User clicked Yes. Proceeding...")
-                window.location.href = "https://www.instagram.com/allan_hanan/"
-            } else {
-                console.log("User clicked No. Canceling...")
-                while(colltest({rect1: player, rect2: git})){
-                      movables.forEach(movable => {movable.position.y += 0.05})
-                }
+    if (!collisionFlag){
+        if (colltest({rect1: player, rect2: ig})){
+            collisionFlag = true
+            console.log('colliding')
+            showConfirmation("Do you want to proceed?").then((result) => {
+                if (result) {
+                    console.log("User clicked Yes. Proceeding...")
+                    window.location.href = "https://www.instagram.com/allan_hanan/"
+                } else {
+                    console.log("User clicked No. Canceling...")
+                    collisionFlag = false
+                    while(colltest({rect1: player, rect2: ig})){
+                        movables.forEach(movable => {movable.position.y += 0.05})
+                    }
 
-            }
-        })
+                }
+            })
+        }
     }
 
     player.moving = false
@@ -238,9 +267,11 @@ function animate(){
     if(!clicked){
         ctx.drawImage(loading, 0, 0, canvas.width, canvas.height)
     }
+
 }
 
 animate()
+
 
 let LastKey = ''
 window.addEventListener('keydown', (e) => {
