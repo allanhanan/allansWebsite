@@ -9,12 +9,14 @@ const plyrUp = new Image()
 const plyrLeft = new Image()
 const plyrRight = new Image()
 const loading = new Image()
+const insta = new Image()
 var audio = new Audio("./assets/bgmsc.mp3")
 audio.loop = true
 audio.volume = 0.5
 
 
 
+insta.src = './assets/insta.png'
 loading.src = './assets/loading.png'
 plyr.src = './assets/playerDown.png'
 plyrUp.src = 'https://cdn.discordapp.com/attachments/990279097366245439/1236333362608865392/playerUp.png?ex=6637a0ab&is=66364f2b&hm=f7ec56c999e89ac7453870c17c0e80e72844da673bdd04c96de5bc2c90274366&'
@@ -112,6 +114,14 @@ const git = new Sprite({
     image: gitc
 })
 
+const ig = new Sprite({
+    position: {
+        x: 1000,
+        y: 450
+    },
+    image: insta
+})
+
 const keys= {
     w: {pressed: false},
     a: {pressed: false},
@@ -119,7 +129,13 @@ const keys= {
     d: {pressed: false}
 }
 
-const movables = [bg, git]
+const movables = [bg, git, ig]
+
+function sleep(ms) {
+    return new Promise(resolve => {
+      setTimeout(resolve, ms)
+    })
+}
 
 function colltest({rect1, rect2}){
     return(
@@ -131,16 +147,67 @@ function colltest({rect1, rect2}){
 
 }
 
+function showConfirmation(message) {
+    return new Promise((resolve) => {
+        const modal = document.getElementById("confirmationModal")
+        const messageElement = document.getElementById("confirmationMessage")
+        const confirmButton = document.getElementById("confirmButton")
+        const cancelButton = document.getElementById("cancelButton")
+
+        messageElement.textContent = message
+
+        modal.style.display = "block"
+
+        confirmButton.onclick = function() {
+            modal.style.display = "none"
+            resolve(true)
+        };
+
+        cancelButton.onclick = function() {
+            modal.style.display = "none"
+            resolve(false)
+        }
+    })
+}
+
 function animate(){
 
     window.requestAnimationFrame(animate)
     bg.draw()
     git.draw()
     player.draw()
+    ig.draw()
 
     if (colltest({rect1: player, rect2: git})){
         console.log('colliding')
-        window.location.href = "https://github.com/allanhanan";
+        showConfirmation("Do you want to proceed?").then((result) => {
+            if (result) {
+                console.log("User clicked Yes. Proceeding...")
+                window.location.href = "https://github.com/allanhanan"
+            } else {
+                console.log("User clicked No. Canceling...")
+                while(colltest({rect1: player, rect2: git})){
+                      movables.forEach(movable => {movable.position.y += 0.05})
+                }
+
+            }
+        })
+    }
+
+    if (colltest({rect1: player, rect2: ig})){
+        console.log('colliding')
+        showConfirmation("Do you want to proceed?").then((result) => {
+            if (result) {
+                console.log("User clicked Yes. Proceeding...")
+                window.location.href = "https://www.instagram.com/allan_hanan/"
+            } else {
+                console.log("User clicked No. Canceling...")
+                while(colltest({rect1: player, rect2: git})){
+                      movables.forEach(movable => {movable.position.y += 0.05})
+                }
+
+            }
+        })
     }
 
     player.moving = false
