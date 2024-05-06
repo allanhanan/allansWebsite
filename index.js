@@ -31,6 +31,9 @@ canvas.height = window.innerHeight
 ctx.drawImage(loading,0,0)
 let clicked = false
 let collisionFlag = false
+let i = 0.1
+let j = 0.1
+let fell = false
 audio.load()
 
 
@@ -97,6 +100,16 @@ const player = new Sprite({
  
     }
 
+})
+const loadplayer = new Sprite({
+    position: {
+        x: canvas.width/4 - 15,
+        y: canvas.height/2 - 115
+    },
+    frames: {
+        max: 4
+    },
+    image: plyrRight
 })
 
 const bg = new Sprite({
@@ -184,21 +197,37 @@ function showConfirmation(message) {
   
       cancelButton.addEventListener("click", () => {
         modal.style.display = "none"
-        resolve(false);
+        resolve(false)
       })
     })
-  }
+}
+
+function drawProgressBar(x, y, width, height, progress) {
+    //Background
+    ctx.fillStyle = 'gray'
+    ctx.fillRect(x, y, width, height)
+    
+    //Progress
+    ctx.fillStyle = 'blue'
+    ctx.fillRect(x, y, width * progress, height)
+    console.log("drawn")
+}
+
+
+function drawallBG(){
+    bg.draw()
+    git.draw()
+    ig.draw()
+}
   
 
 
 function animate(){
 
     window.requestAnimationFrame(animate)
-    bg.draw()
-    git.draw()
+    drawallBG()
     player.draw()
-    ig.draw()
-
+    
     if (!collisionFlag){
         if (colltest({rect1: player, rect2: git})){
             collisionFlag = true
@@ -266,6 +295,32 @@ function animate(){
 
     if(!clicked){
         ctx.drawImage(loading, 0, 0, canvas.width, canvas.height)
+        drawProgressBar(canvas.width/4, (canvas.height/2) - 50, canvas.width/4, 30, i)
+        loadplayer.draw()
+        loadplayer.moving = true
+        if(loadplayer.position.x < canvas.width/2){
+            loadplayer.position.x += i*2
+        }
+        else{
+            loadplayer.position.x += i * 6
+            loadplayer.position.y += j * 2
+        }
+        if(i<1){
+            i += 0.0025
+            j += 0.05
+        }
+    }
+
+    if(clicked && !fell){
+        if(loadplayer.position.y < canvas.height/2 - 20){
+            loadplayer.position.y += 8  
+            drawallBG()
+            loadplayer.draw()
+        }
+        else{
+            fell = true
+        }
+        
     }
 
 }
@@ -299,24 +354,30 @@ window.addEventListener('keyup', (e) => {
     switch (e.key){
         case 'w':
             keys.w.pressed = false
+            player.image = player.sprites.up
             break
         case 'a':
             keys.a.pressed = false
+            player.image = player.sprites.left
             break
         case 's':
             keys.s.pressed = false
+            player.image = player.sprites.down
             break
         case 'd':
             keys.d.pressed = false
+            player.image = player.sprites.right
             break
     }
 })
 
 
 addEventListener('click', () => {
-  if (!clicked) {
+  if (!clicked && (i>1)) {
     audio.play()
     clicked = true
     console.log('clicked')
+    loadplayer.position.x = canvas.width/2 - (plyr.width/4)/20 - 20
+    loadplayer.position.y = 0
   }
 })
