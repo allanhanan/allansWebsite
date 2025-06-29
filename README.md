@@ -1,3 +1,3 @@
 # allansWebsite
-personal website with stolen assets because yes.
+personal website without stolen assets !!!
 https://allanhanan.github.io/allansWebsite/
