@@ -3,40 +3,40 @@
       {
         "title": "Presntor",
         "description": "A presentation manager for staging presentations with verseview and obs integration",
-        "thumbnail": "/assets/presntor.png",
+        "thumbnail": "assets/presntor.png",
         "tags": ["Python", "Productivity", "Management"],
-        "link": "/pages/apps/presntor.html"
+        "link": "pages/apps/presntor.html"
       },
       {
         "title": "Blink Gesture",
         "description": "Blink twice to send Keyboard Shortcuts / Double blink Gesture",
-        "thumbnail": "/assets/placeholder.png",
+        "thumbnail": "assets/placeholder.png",
         "tags": ["Python", "Computer Vision", "Gestures"],
-        "link": "/pages/apps/BlinkGesture.html",
+        "link": "pages/apps/BlinkGesture.html",
         "repo": "https://github.com/allanhanan/BlinkGesture"
       },
       {
         "title": "Smart AI Based Traffic Management System",
         "description": "AI-based system for dynamic traffic signal control using EfficientDet and LSTM",
-        "thumbnail": "/assets/placeholder.png",
+        "thumbnail": "assets/placeholder.png",
         "tags": ["Python", "Object Detection", "Computer Vision", "Smart City", "Hackathon"],
-        "link": "/pages/apps/trafficdetection.html",
+        "link": "pages/apps/trafficdetection.html",
         "repo": "https://github.com/allanhanan/VehicleDetectionEffdet/tree/sideProject"
       },
       {
         "title": "ViST – Vision Transformer in C++",
         "description": "A complete Vision Transformer built from scratch in C++ only using the STD Libraries.",
-        "thumbnail": "/assets/placeholder.png",
+        "thumbnail": "assets/placeholder.png",
         "tags": ["C++", "Transformer", "From Scratch"],
-        "link": "/pages/apps/ViST.html",
+        "link": "pages/apps/ViST.html",
         "repo": "https://github.com/allanhanan/ViST"
       },
       {
         "title": "Ponzi Scheme Detection",
         "description": "Detects Ponzi schemes from investment texts using NLP, neural risk scoring, and a random forest classifier.",
-        "thumbnail": "/assets/placeholder.png",
+        "thumbnail": "assets/placeholder.png",
         "tags": ["Python", "NLP", "WebApp"],
-        "link": "/pages/apps/ponzi.html",
+        "link": "pages/apps/ponzi.html",
         "repo": "https://github.com/Vijay-31-08-2005/ponzi-scheme-detection"
       }
     ]
