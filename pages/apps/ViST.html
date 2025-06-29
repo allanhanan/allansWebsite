@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ViST – Vision Transformer in C++</title>
+  <link rel="stylesheet" href="/styles/music-games.css"/>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: system-ui, sans-serif;
+      padding: 1.5rem 3vw;
+      max-width: 1600px;
+      margin: auto;
+      font-size: 1.15rem;
+      line-height: 1.75;
+      color: var(--fg);
+    }
+    h1 { font-size: 3.5rem; color: var(--accent-blue); margin: 0.4rem 0 1rem; }
+    h2 { font-size: 2.2rem; color: var(--accent-green); margin-top: 3rem; }
+    h3 { font-size: 1.5rem; color: var(--accent-peach); margin-top: 2rem; }
+    h4 { font-size: 1.25rem; color: var(--accent-yellow); margin-top: 1.5rem; }
+    p, li { margin: 0.4rem 0 0.6rem; }
+    ul { padding-left: 1.5rem; }
+    pre {
+      background: #1e1e2e;
+      color: #fff;
+      padding: 1rem;
+      border-radius: 8px;
+      overflow-x: auto;
+      font-size: 0.95rem;
+    }
+    img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 0.5rem;
+      margin: 1.5rem 0;
+      border: 1px solid var(--border);
+    }
+    a.github-btn {
+      display: inline-flex;
+      align-items: center;
+      background: var(--accent-blue);
+      color: var(--bg);
+      padding: 0.5rem 1rem;
+      border-radius: 999px;
+      font-weight: 500;
+      font-size: 1rem;
+      text-decoration: none;
+      gap: 0.4rem;
+      margin-top: 0.8rem;
+      transition: background 0.2s ease;
+    }
+    a.github-btn:hover {
+      background: var(--accent-peach);
+    }
+    .go-back-btn {
+      position: fixed;
+      top: 1.5rem;
+      left: 1rem;
+      padding: 0.5rem 1rem;
+      background: var(--accent-blue);
+      color: var(--bg);
+      border-radius: var(--radius);
+      font-family: var(--font-display);
+      font-size: 1rem;
+      text-decoration: none;
+      transition: background 0.3s ease;
+      z-index: 100;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+    .go-back-btn:hover {
+      background: var(--accent-peach);
+    }
+  </style>
+</head>
+
+<body>
+  <button class="go-back-btn" onclick="history.back()">← Go Back</button>
+
+  <h1>ViST – Vision Transformer from Scratch</h1>
+
+  <p><strong>ViST</strong> is a complete Vision Transformer implemented entirely in C++ using only the standard library and <code>stb_image</code>. It classifies images into three categories using a from-scratch patching, attention, and classification pipeline — no frameworks, no external ML libs.</p>
+
+  <h2>How to Run</h2>
+  <p>Clone and build with CMake:</p>
+  <pre><code>git clone https://github.com/allanhanan/ViST.git
+cd ViST
+mkdir build
+cd build
+cmake ..
+make</code></pre>
+
+  <p>To train the model:</p>
+  <pre><code>./ViT</code></pre>
+
+  <p>To test on a saved model and image:</p>
+  <pre><code>./ViT /path/to/model_checkpoint.bin /path/to/image.png</code></pre>
+
+  <img src="/assets/ViST/output.png" alt="ViST demo output – classification result" />
+
+  <h2>GitHub</h2>
+  <a href="https://github.com/allanhanan/ViST" class="github-btn" target="_blank">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+      <path d="M12 0C5.37 0 0 5.373 0 12c0 5.302 3.438 9.8 
+      8.205 11.387.6.113.82-.26.82-.577 0-.285-.01-1.04-.015-2.04
+      -3.338.726-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.756-1.333
+      -1.756-1.09-.745.084-.73.084-.73 1.205.084 1.84 1.237 1.84
+      1.237 1.07 1.835 2.807 1.305 3.492.998.108-.775.42-1.306.763
+      -1.606-2.665-.305-5.466-1.334-5.466-5.933 0-1.31.465-2.382
+      1.235-3.222-.124-.303-.535-1.527.117-3.176 0 0 1.008-.322
+      3.3 1.23a11.5 11.5 0 0 1 3.003-.403c1.02.005 2.047.137
+      3.003.403 2.29-1.552 3.297-1.23 3.297-1.23.653 1.65.242
+      2.873.12 3.176.77.84 1.233 1.913 1.233 3.222 0 4.61-2.803
+      5.625-5.475 5.922.43.37.823 1.1.823 2.222 0 1.606-.015
+      2.898-.015 3.292 0 .32.217.694.825.576C20.565 21.796
+      24 17.298 24 12c0-6.627-5.373-12-12-12z"/>
+    </svg>
+    GitHub
+  </a>
+
+  <section>
+    <h1>ViST (Vision Transformer from Scratch) – C++ Implementation Overview</h1>
+  
+    <p>
+      ViST is a fully hand-built <strong>Vision Transformer</strong> implemented in C++ using only the standard library (plus <em>stb_image</em> for image I/O).
+      It reconstructs the entire ViT image-classification pipeline from first principles: loading and preprocessing images, splitting into patches,
+      adding positional encodings, applying Transformer blocks (self-attention + feedforward layers), and classifying with a linear head.
+    </p>
+    <p>
+      All matrix and vector operations (dot products, normalization, activations, etc.) are coded manually with <code>std::vector</code> loops,
+      and even a basic backpropagation and optimizer are implemented by hand. This pure-CPU, no-framework design is for me to test my own skills and to understand how a transformer works
+    </p>
+    <p>Below is a breakdown of the architecture, file responsibilities, and implementation details.</p>
+  
+    <h2>Architecture and Data Flow</h2>
+    <ul>
+      <li><strong>Image Input:</strong> An input image is loaded from disk using <code>stb_image</code>. It’s resized to a fixed size (like 300×300) using nearest-neighbor and normalized to [0,1].</li>
+      <li><strong>Patch Embedding:</strong> The resized image is split into 16×16 patches, flattened to vectors. Each patch = 1 vector, with shape <code>16×16×3</code>.</li>
+      <li><strong>Positional Encoding:</strong> Sine/cosine vectors are added per patch to encode position info. Scale = 0.1.</li>
+      <li><strong>[CLS] Token:</strong> A learnable vector is added to the beginning. Its final state is used for classification.</li>
+      <li><strong>Transformer Blocks:</strong> Each block has multi-head attention, residuals, layer norm, and a 2-layer GELU MLP. Output is fed to the next block.</li>
+      <li><strong>Final Classifier:</strong> After all blocks, final norm is applied. The [CLS] token is projected to logits with a linear head.</li>
+    </ul>
+    <p>The entire pipeline is load → patch → encode → transform → classify.</p>
+  </section>
+  
+  <section>
+    <h2>Module Responsibilities and File Roles</h2>
+  
+    <h3><code>image_loader.hpp</code></h3>
+    <p>Handles image loading and resizing using stb_image. Returns a normalized 3D vector (H×W×3). Uses nearest-neighbor interpolation. Includes:</p>
+    <ul>
+      <li><code>load_image()</code> – loads, normalizes, checks shape</li>
+      <li><code>resize_image()</code> – pure CPU-based resizing (nearest)</li>
+    </ul>
+  
+    <h3><code>image_utils.hpp</code></h3>
+    <p>Has augmentation functions like flips, rotations, brightness — but these aren’t used in training yet. Intended for expansion.</p>
+  
+    <h3><code>patch_embedding.cpp</code></h3>
+    <p>
+      Extracts 16×16 patches from an image. Each patch is flattened into a 1D float vector (RGB interleaved).
+      Stored in a <code>vector&lt;vector&lt;float&gt;&gt;</code>.
+    </p>
+    <ul>
+      <li><code>create_patch_embedding()</code> loops through image and builds patch embeddings.</li>
+    </ul>
+  
+    <h3><code>positional_encoding.cpp</code></h3>
+    <p>
+      Builds sinusoidal encodings per patch (same method as original Transformer). Adds these encodings element-wise to each patch vector.
+      Scaling factor is 0.1. Functions include:
+    </p>
+    <ul>
+      <li><code>create_positional_encoding(num_patches, dim)</code></li>
+      <li><code>add_positional_encoding(patches, encoding)</code></li>
+    </ul>
+  
+    <h3><code>utils.hpp</code></h3>
+    <p>This file is where the math lives. Matrix ops, layer norm, GELU, random init, softmax, loss, etc.</p>
+    <ul>
+      <li><code>matmul</code>, <code>transpose</code>, <code>add_matrices</code>, <code>scalar_multiply</code></li>
+      <li><code>linear_transform</code> = does XW + b with triple loops</li>
+      <li><code>layer_norm</code> = standard zero-mean, unit-variance + gamma/beta</li>
+      <li><code>gelu</code> = exact GELU (with tanh)</li>
+      <li><code>random_vector</code>, <code>random_matrix</code> – uniform weight init</li>
+      <li><code>softmax_vector</code>, <code>calculate_loss</code>, <code>add_bias</code></li>
+      <li>Various numerical sanity checks – detect NaNs, clip values</li>
+    </ul>
+  </section>
+
+  <section>
+    <h3><code>multi_head_attention.hpp</code></h3>
+    <p>
+      Defines the multi-head self-attention operation. It computes Q, K, V projections, splits into heads, performs scaled dot-product,
+      and projects the result back. The catch? No softmax. Scores are scaled and clamped instead.
+    </p>
+    <ul>
+      <li><code>multi_head_attention()</code> – takes in input, weights, biases, number of heads, d_k, d_v</li>
+      <li>Q, K, V are computed by <code>linear_transform</code></li>
+      <li>Heads are split by slicing Q/K/V</li>
+      <li>Scores = Q × Kᵗ / √d<sub>k</sub> → clamped instead of softmax</li>
+      <li>Scores are multiplied with V and heads are concatenated</li>
+      <li>Final projection is done with another linear layer</li>
+    </ul>
+    <p>This mostly does what you’d expect from attention, minus the softmax. Logs Q/K/V sizes to help debug.</p>
+  
+    <h3><code>feedforward.hpp</code></h3>
+    <p>Implements the 2-layer MLP inside each transformer block.</p>
+    <ul>
+      <li><code>feedforward_network(input, W1, b1, W2, b2)</code></li>
+      <li>Applies: Linear → GELU → Linear</li>
+    </ul>
+  
+    <h3><code>transformer_block.cpp</code></h3>
+    <p>
+      Class wrapper for a single Transformer block. Instantiates attention weights, FFN weights, and layer norm params.
+      The <code>forward()</code> function applies everything in order:
+    </p>
+    <ol>
+      <li>QKV Attention + residual + layer norm</li>
+      <li>FFN + residual + layer norm</li>
+    </ol>
+    <p>It follows the standard Transformer sub-layer logic, with shape checks and logs.</p>
+  
+    <h3><code>vit_model.hpp</code></h3>
+    <p>This is where the full Vision Transformer model is defined. It combines together image loading, patching, encoding, transformer stack, and final classification.</p>
+    <ul>
+      <li><code>vision_transformer(image_path, num_classes, num_blocks)</code> – main entry</li>
+      <li>Resizes and loads the image using <code>load_image()</code></li>
+      <li>Extracts patches via <code>create_patch_embedding()</code></li>
+      <li>Applies positional encoding</li>
+      <li>Adds a random <code>[CLS]</code> token</li>
+      <li>Runs all Transformer blocks (e.g. 12 stacked)</li>
+      <li>Applies final layer norm</li>
+      <li>Extracts [CLS] output and applies linear classifier (random weights)</li>
+    </ul>
+    <p>Note: this head is <strong>not</strong> trained. The second classifier in <code>VitModelWrapper</code> is trained instead.</p>
+  </section>
+  
+  <section>
+    <h3><code>training_utils.hpp</code></h3>
+    <p>Utilities for training logic — loss, dropout, gradient update, early stopping.</p>
+    <ul>
+      <li><code>cross_entropy_loss()</code> – manual softmax + log loss</li>
+      <li><code>backpropagate_classifier()</code> – computes gradient for classifier weights</li>
+      <li><code>update_classifier_weights()</code> – basic gradient descent with optional clipping</li>
+      <li><code>dropout()</code> – not used yet but implemented</li>
+      <li><code>EarlyStopping</code> – struct that tracks loss and patience</li>
+    </ul>
+  
+    <h3><code>gradients.hpp</code></h3>
+    <p>
+      Low-level backpropagation logic. This file prepares for full gradient descent through layers, but only the classifier backprop is wired up currently.
+    </p>
+    <ul>
+      <li><code>backprop_linear_transform()</code> – computes dX, dW, db for a linear layer</li>
+      <li><code>gelu_derivative()</code>, <code>gelu_gradient()</code> – for FFN backprop</li>
+    </ul>
+  
+    <h3><code>optimizers.hpp</code></h3>
+    <p>Manual Adam optimizer for weights and biases.</p>
+    <ul>
+      <li><code>adam_update_matrix()</code>, <code>adam_update_vector()</code></li>
+      <li>Includes bias correction and optional L1/L2 reg</li>
+      <li>These are used directly during training</li>
+    </ul>
+  </section>
+
+  <section>
+    <h3><code>checkpoint.hpp</code></h3>
+    <p>
+      Handles saving and loading model checkpoints in binary. This only covers the classifier layer and Adam optimizer state — transformer weights aren’t stored.
+    </p>
+    <ul>
+      <li><code>save_checkpoint()</code> – writes classifier weights, bias, epoch, Adam m/v vectors</li>
+      <li><code>load_checkpoint()</code> – restores them with dimension checks</li>
+    </ul>
+    <p>Simple binary format, used after every training epoch.</p>
+  
+    <h3><code>train.cpp</code></h3>
+    <p>
+      The main training logic. Runs through all images in a folder, applies the model, computes loss, and updates the classifier via Adam. Batches are processed in parallel.
+    </p>
+    <ul>
+      <li>Walks the directory (expects folders like <code>apple/</code>, <code>banana/</code>, etc.)</li>
+      <li>Maps subfolder names to labels</li>
+      <li>Processes in mini-batches using <code>std::async</code></li>
+      <li>For each image:
+        <ul>
+          <li>Run forward pass → compute loss</li>
+          <li>Call <code>backpropagate()</code> to compute gradient for classifier</li>
+          <li>Update weights using Adam</li>
+        </ul>
+      </li>
+      <li>Tracks running average loss</li>
+      <li>Early stopping kicks in if no improvement</li>
+      <li>Saves a checkpoint every epoch</li>
+    </ul>
+    <p>
+      Note: Only the final classifier is trained. The actual Vision Transformer blocks are frozen random weights.
+    </p>
+  
+    <h3><code>test.cpp</code></h3>
+    <p>
+      Simple inference code. Loads a model checkpoint and an image, runs a forward pass, and prints logits + predicted class.
+    </p>
+    <ul>
+      <li><code>test_model(checkpoint_file, image_path)</code></li>
+      <li>Restores model from file</li>
+      <li>Loads and resizes image</li>
+      <li>Runs same patching/encoding/CLS path as training</li>
+      <li>Prints softmax logits and predicted label</li>
+    </ul>
+  
+    <h3><code>main.cpp</code></h3>
+    <p>
+      CLI entry point. If no args: trains from <code>../train</code>. If args are provided: loads checkpoint and runs test using 12 blocks (not consistent).
+    </p>
+    <ul>
+      <li>No CLI arg → train</li>
+      <li><code>./ViT model.bin image.png</code> → test</li>
+    </ul>
+  </section>
+  
+  <section>
+    <h2>Training and Testing Flow</h2>
+  
+    <h3>Training</h3>
+    <p>Triggered by running <code>./ViT</code> with no arguments. This launches the full training pipeline in plain C++:</p>
+    <ul>
+      <li><strong>Data Loading:</strong>
+        <ul>
+          <li>Scans <code>../train</code> directory for subfolders (<code>apple</code>, <code>banana</code>, <code>orange</code>)</li>
+          <li>Each folder name is mapped to a class label (0, 1, 2)</li>
+          <li>All file paths are loaded into memory for batching</li>
+        </ul>
+      </li>
+  
+      <li><strong>Threaded Batch Execution:</strong>
+        <ul>
+          <li>Batches of images are split across threads via <code>std::async</code></li>
+          <li>Each thread runs <code>process_batch()</code> on its assigned samples</li>
+          <li>All model updates (classifier weights) are synchronized using <code>std::mutex</code></li>
+        </ul>
+      </li>
+  
+      <li><strong>Per-Sample Pipeline:</strong>
+        <ul>
+          <li><strong>Image Load:</strong> Uses <code>stb_image</code> to decode into raw RGB data</li>
+          <li><strong>Resize:</strong> Rescaled to 300×300 via nearest-neighbor interpolation</li>
+          <li><strong>Normalization:</strong> Pixel values are converted to floats in the range [0,1]</li>
+          <li><strong>Patchify:</strong> Image is split into 16×16 non-overlapping patches</li>
+          <li>Each patch is flattened to a vector of size 768 (16×16×3)</li>
+          <li><strong>Positional Encoding:</strong> Sinusoidal vectors (one per patch) are generated and scaled by 0.1, then added to the patch vectors</li>
+          <li><strong>CLS Token:</strong> A new random `[CLS]` token is prepended to the patch sequence</li>
+          <li><strong>Transformer Stack:</strong>
+            <ul>
+              <li>Each TransformerBlock applies:
+                <ul>
+                  <li>Q/K/V projections for all tokens (via <code>linear_transform</code>)</li>
+                  <li>Each projection split across 8 heads</li>
+                  <li>Dot-product attention scores are computed for each head: <code>Q · Kᵗ / √d_k</code></li>
+                  <li><em>No softmax</em>: scores are clamped to [-1e6, 1e6] and used directly</li>
+                  <li>Each head produces weighted values (V), all heads are concatenated</li>
+                  <li>Concatenated vector passed through a final projection layer</li>
+                  <li>Residual connection added to original input</li>
+                  <li>Custom <code>layer_norm</code> applied (zero mean/unit variance)</li>
+                  <li>Then passed through a 2-layer MLP: linear → GELU → linear</li>
+                  <li>Second residual + <code>layer_norm</code> finishes the block</li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+          <li><strong>Final LayerNorm:</strong> Applied to all token embeddings</li>
+          <li><strong>Classifier:</strong>
+            <ul>
+              <li>Only the first token (CLS) is extracted</li>
+              <li>CLS values are clipped to ±20 for numerical stability</li>
+              <li>Logits are computed via: <code>logits = W_cls · [CLS] + b_cls</code></li>
+            </ul>
+          </li>
+          <li><strong>Loss:</strong> Cross-entropy loss is applied against the true label</li>
+          <li><strong>Backprop:</strong>
+            <ul>
+              <li>Only the classifier weights <code>W</code> and bias <code>b</code> receive gradients</li>
+              <li>Gradients are computed manually using explicit loop logic</li>
+              <li>Adam optimizer is applied:
+                <ul>
+                  <li>1st and 2nd moments (<code>m</code>, <code>v</code>) tracked per parameter</li>
+                  <li>Bias-corrected step: <code>m̂ = m / (1 - β₁ᵗ)</code>, <code>v̂ = v / (1 - β₂ᵗ)</code></li>
+                  <li>Update: <code>param -= lr × m̂ / (√v̂ + ε)</code></li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+  
+      <li><strong>Checkpointing:</strong>
+        <ul>
+          <li>After each epoch, <code>save_checkpoint()</code> writes a binary file containing:</li>
+          <li>Classifier weights and bias</li>
+          <li>Optimizer <code>m</code>/<code>v</code> for weights and bias</li>
+          <li>Current epoch and step count</li>
+        </ul>
+      </li>
+    </ul>
+  
+    <h3>Testing</h3>
+    <p>Triggered by running <code>./ViT model_checkpoint.bin image.png</code></p>
+    <ul>
+      <li>Model is reconstructed using <code>load_checkpoint()</code></li>
+      <li>Classifier weights, bias, and optimizer state restored</li>
+      <li>Test image is loaded, resized, and normalized</li>
+      <li>Patch embedding and positional encoding are identical to training</li>
+      <li>Random `[CLS]` token is inserted at the front</li>
+      <li>Transformer stack is applied again (12 blocks during test)</li>
+      <li>Final `[CLS]` token passed through classifier layer</li>
+      <li>Logits are printed for each class</li>
+      <li>Class with highest logit is selected as prediction</li>
+    </ul>
+  </section>
+  
+
+  <section>
+    <h2>Implementation Details</h2>
+  
+    <h3>Manual Linear Algebra</h3>
+    <p>
+      All matrix operations are explicit — no Eigen or BLAS. For example, <code>matmul(A, B)</code> is done with triple nested loops. It’s slow but makes the math very clear.
+    </p>
+  
+    <h3>Stability Checks</h3>
+    <p>
+      A few hacks help avoid numeric instability:
+    </p>
+    <ul>
+      <li>Clips logits to ±20 before final classification</li>
+      <li>Checks for NaNs in layer norm outputs</li>
+      <li>Clamps dot-product scores in attention to avoid overflows (no softmax)</li>
+    </ul>
+  
+    <h3>Code Structure</h3>
+    <p>
+      Some headers include their `.cpp` counterparts inline (like <code>vit_model.hpp</code> including <code>transformer_block.cpp</code>). Not typical C++ structure, but works for a bundled setup.
+    </p>
+  
+    <section>
+        <h2>Limitations</h2>
+      
+        <p>
+          While ViST was built to push me to achive what’s possible with just the C++ standard library, there are still a few practical and architectural limitations (i.e skill issues) worth noting:
+        </p>
+      
+        <ul>
+          <li><strong>Only Final Classifier Trained:</strong> The transformer blocks are initialized randomly and frozen. Training only updates the final classification head.</li>
+      
+          <li><strong>No Softmax in Attention:</strong> Self-attention scores are scaled and clamped but not normalized with softmax — attention weights are just raw dot-products.</li>
+      
+          <li><strong>Hardcoded Hyperparameters:</strong>
+            Several key values like patch size (16), image size (300×300), and class count (3) are hardcoded across files. For example:
+            <ul>
+              <li><code>train.cpp</code> assumes class folders are <code>apple</code>, <code>banana</code>, <code>orange</code></li>
+              <li><code>main.cpp</code> uses different transformer block counts for train vs. test</li>
+            </ul>
+          </li>
+      
+          <li><strong>CPU Only:</strong> All computation is done using plain <code>std::vector</code>. There’s no GPU acceleration or SIMD usage, so larger models will be very slow.</li>
+      
+          <li><strong>No Generalization Support:</strong> Directory layout, image size, model config, and even training logic are all tightly coupled. There’s no CLI or config system to adjust things dynamically.</li>
+      
+          <li><strong>Partially Implemented Backpropagation:</strong>
+            While gradient computations are coded manually and some GELU/linear layer backprop functions exist, full end-to-end backprop through transformer layers isn’t wired in.
+          </li>
+      
+          <li><strong>Static Data Augmentation:</strong> Augmentation utilities (flips, brightness, etc.) exist in code but aren’t used during training.</li>
+      
+          <li><strong>Naive Matrix Math:</strong> All tensor ops are triple-nested loops with no optimization. For large matrices, performance drops off faster than idk a lot.</li>
+      
+          <li><strong>Simple Checkpointing:</strong> Only the final classifier and optimizer state is saved. If you train transformer weights in the future, those aren't currently preserved.</li>
+
+          <li><strong>Memory Leaks:</strong> Eventhough I tried to avoid all manual memory management, theres still some memory leaks that shows up after training for a long time.</li>
+        </ul>
+      
+        <p>
+          These aren’t dealbreakers, most are by design for simplicity. But worth keeping in mind if you plan to try this and contribute (would be great)
+        </p>
+      </section>
+
+      <section>
+        <h2>What’s Next</h2>
+      
+        <p>There’s a lot of stuff to add, improve, rework but theres some that’s more important to make it a somewhat polished code.</p>
+      
+        <ul>
+          <li><strong>CUDA Support:</strong> Port core tensor operations (like <code>matmul</code>, linear layers, GELU, etc.) to run on the GPU for massive speedups. The current nested-loops are just too slow on CPU.</li>
+      
+          <li><strong>Parameterization:</strong> Instead of hardcoding everything (number of blocks, patch size, image dims, class count), allow these to be passed in via CLI args or config files.</li>
+      
+          <li><strong>Replace <code>stb_image</code>:</strong> Implement a custom PNG/JPEG decoder to remove the only external dependency and actually stick to “standard library only” if that’s still the goal anymore atp.</li>
+      
+          <li><strong>Matrix Operations Optimization:</strong> Rewrite inner loops to unroll, preallocate, reduce copies, and apply blocking/tile strategies where possible. Even basic cache-aware changes would help. Possibly explore using `std::valarray` or SIMD intrinsics for critical paths.</li>
+      
+          <li><strong>Trainable Transformer Blocks:</strong> Wire up actual gradient computation and parameter updates for attention weights, feedforward layers, and positional encodings. Backprop for the full ViT stack is already scaffolded — just needs to be connected.</li>
+      
+          <li><strong>Modular Rewrite:</strong> Split .cpp/.hpp properly (instead of including .cpps in headers), follow idiomatic modern C++ practices (RAII, smart pointers, proper encapsulation).</li>
+      
+          <li><strong>Unit Tests:</strong> Add sanity checks for core components like `matmul`, `gelu`, and `layer_norm` using test cases and expected values. Could be as simple as a separate debug target.</li>
+      
+          <li><strong>More Dataset Flexibility:</strong> Add support for custom class folders, or read labels from a CSV/json instead of relying on hardcoded names like <code>apple</code> and <code>banana</code>.</li>
+      
+          <li><strong>Training Logs & Metrics:</strong> Record per-epoch accuracy, loss graphs, and export metrics to files. Or atleast proper logging to the terminal</li>
+      
+          <li><strong>Model Serialization:</strong> Extend checkpointing to include all weights — not just the final classifier — so full model state can be saved and resumed even if training is extended to deeper layers.</li>
+
+          <li><strong>Making it Fast and Efficient:</strong>Gotta optimize but ill do that later(im never doing it) </li>
+        </ul>
+      
+        <p>This version of ViST was already a wild ride, but taking it one step further would turn it into a fully usable transformer or a minimal production-grade ViT prototype in C++.</p>
+      </section>
+      
+  
+  <section>
+    <h2>Conclusion</h2>
+    <p>
+      ViST rebuilds a full Vision Transformer from scratch using just C++ and <code>stb_image</code>. It patches, encodes, transforms, and classifies images through custom layers — no frameworks, no ML libs, no GPU, and no braincells.
+    </p>
+    <p>
+      Everything is hand-written (i'll change the image loader, then this will be true). There’s a Transformer model with layer norm and attention, positional encodings, and even model checkpointing — all working, all clean(?)
+    </p>
+    <p>
+      The only thing that isn’t wired in is full end-to-end gradient descent — right now, just the final classifier gets trained. The rest stays frozen.
+    </p>
+    <p>
+      Still, this was a great way for me to learn how Transformers work even if it is full of holes and tons of tech debt for any future changes.
+    </p>
+  </section>
+  
+  
+  <section class="comments">
+    <h2>Comments</h2>
+    <div id="giscus_container"></div>
+  </section>
+  
+</body>
+</html>

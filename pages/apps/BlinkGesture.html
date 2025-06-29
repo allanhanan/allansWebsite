@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BlinkGesture – Eye Blink Controlled Actions</title>
+  <link rel="stylesheet" href="/styles/music-games.css" />
+  <link rel="stylesheet" href="/styles/apps.css" />
+  <style>
+body {
+  padding: 2rem 4vw;
+  max-width: 1600px;
+  margin: auto;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-size: 1.05rem;
+  line-height: 1.75;
+  color: var(--fg);
+}
+
+h1, h2 {
+  font-family: var(--font-display), sans-serif;
+  font-weight: 700;
+  margin: 0.5rem 0;
+  line-height: 1.2;
+}
+
+h1 {
+  font-size: 2.6rem;
+  color: var(--accent-blue);
+  margin-bottom: 0.5rem;
+}
+
+h2 {
+  font-size: 1.4rem;
+  color: var(--accent-green);
+  margin-top: 2rem;
+  margin-bottom: 0.4rem;
+}
+
+p, li {
+  font-size: 1.05rem;
+  line-height: 1.75;
+  color: var(--fg-muted);
+}
+
+ul {
+  padding-left: 1.4rem;
+  margin-top: 0.5rem;
+  margin-bottom: 1.2rem;
+}
+
+pre, code {
+  font-family: "Courier New", Courier, monospace;
+  font-size: 0.95rem;
+}
+
+    .main-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 3rem;
+      align-items: start;
+    }
+
+    .project-images img {
+      width: 100%;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      margin-bottom: 1rem;
+    }
+
+    ul {
+      padding-left: 1.2rem;
+      margin-top: 0.5rem;
+    }
+
+    pre {
+      background: #1e1e1e;
+      color: #fff;
+      padding: 1rem;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      overflow-x: auto;
+    }
+
+    .download-buttons {
+  display: flex;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+  margin-top: 0.5rem;
+}
+
+.download-buttons a {
+  background: var(--accent-blue);
+  color: var(--bg);
+  padding: 0.4rem 0.9rem;
+  border-radius: 999px;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition: background 0.3s ease;
+}
+
+.download-buttons a:hover {
+  background: var(--accent-green);
+}
+
+
+    .link-list a {
+      display: inline-block;
+      margin-top: 0.5rem;
+      font-weight: bold;
+      color: var(--accent-blue);
+      text-decoration: none;
+    }
+
+    .link-list a:hover {
+      color: var(--accent-green);
+    }
+
+    @media (max-width: 900px) {
+      .main-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .side-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-bottom: 1.5rem;
+  justify-content: flex-end;
+}
+
+
+.side-links .repo-link {
+  font-size: 0.95rem;
+  font-weight: 500;
+  text-decoration: none;
+  color: black;
+}
+
+.side-links .repo-link:hover {
+  background-color: var(--accent-green);
+}
+
+.comments {
+  margin-top: 4rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border, #ccc);
+}
+
+.comments h2 {
+  font-size: 1.4rem;
+  color: var(--accent-green);
+  margin-bottom: 1rem;
+}
+
+
+  </style>
+</head>
+<body>
+  <div class="bg-diagonal"></div>
+  <header>
+    <h1>BlinkGesture</h1>
+    <p>Control your computer with intentional eye blinks – a hands-free tool for accessibility and automation.</p>
+  </header>
+
+  <div class="main-grid">
+    <div>
+      <h2>Overview</h2>
+      <p>
+        BlinkGesture is a desktop tool that lets you control your PC using eye blinks. Powered by Python, it uses OpenCV and dlib’s facial landmark detection to calculate Eye Aspect Ratio (EAR) and maps left/right blinks to keyboard actions like arrow keys or other inputs. Great for hands-free navigation, accessibility, or experimenting with computer vision.
+      </p>
+
+      <h2>Latest Release (v1.0.1)</h2>
+      <ul>
+        <li>Native Linux AppImages</li>
+        <li>Removed unsafe code</li>
+        <li>Switched to pyautogui for keyboard inputs</li>
+      </ul>
+      
+      <h2>Download</h2>
+      <div class="download-buttons">
+        <a href="https://github.com/allanhanan/BlinkGesture/releases/download/v1.0.1/BlinkGesture-v1.0.1.AppImage" target="_blank">Linux</a>
+        <a href="https://github.com/allanhanan/BlinkGesture/releases/download/v1.0.1/BlinkGesture-v1.0.1.exe" target="_blank">Windows</a>
+      </div>
+      
+      <h2>How It Works</h2>
+      <ul>
+        <li>Uses OpenCV to access webcam</li>
+        <li>Detects facial landmarks via dlib</li>
+        <li>Computes EAR in real-time</li>
+        <li>Blinks mapped to keyboard actions using pyautogui</li>
+      </ul>
+
+      <h2>Tech Stack</h2>
+      <ul>
+        <li>Python 3</li>
+        <li>OpenCV – webcam input & image processing</li>
+        <li>dlib – facial landmark detection</li>
+        <li>pyautogui – simulate keypresses</li>
+      </ul>
+
+      <h2>Installation (Python)</h2>
+      <pre><code>git clone https://github.com/allanhanan/BlinkGesture.git
+cd BlinkGesture
+pip install -r requirements.txt
+python main.py</code></pre>
+
+      <h2>Use Cases</h2>
+      <ul>
+        <li>🧠 Accessibility: hands-free navigation</li>
+        <li>🎮 Gaming: blink to trigger in-game controls</li>
+        <li>🖥️ Presentations: navigate slides</li>
+        <li>📱 Mobile control: mirror phone & blink to interact</li>
+      </ul>
+
+      <h2>Limitations & Notes</h2>
+      <ul>
+        <li>Needs good lighting for accuracy</li>
+        <li>Works best with a stable webcam feed</li>
+        <li>Doesn't yet support continuous blink/hold</li>
+        <li>Plans: blink-and-hold, more OS support</li>
+      </ul>
+
+    
+    </div> <!-- closes left column -->
+
+    <div> <!-- start right column -->
+      <div class="side-links">
+        <a href="https://github.com/allanhanan/BlinkGesture" target="_blank" class="repo-link">🔗 GitHub Repo</a>
+        <a href="https://github.com/allanhanan/BlinkGesture/releases/tag/v1.0.1" target="_blank" class="repo-link">📦 v1.0.1 Release</a>
+      </div>
+      <div class="project-images">
+        <img src="/assets/BlinkGesture/window.png" alt="Apps Page Screenshot">
+        <img src="/assets/BlinkGesture/frame.png" alt="Blink Frame Detection">
+        <img src="/assets/BlinkGesture/graph.png" alt="EAR Graph Visualization">
+      </div>
+    </div>
+    <section class="comments">
+        <h2>Comments</h2>
+        <div id="giscus_container"></div>
+      </section>
+      
+
+    <a href="javascript:history.back()" class="floating-back-button" aria-label="Go back">←</a>
+
+</body>
+</html>

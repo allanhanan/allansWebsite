@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Presntor – Walkthrough</title>
+  <link rel="stylesheet" href="/styles/about.css" />
+  <link rel="stylesheet" href="/styles/music-games.css" />
+  <link rel="stylesheet" href="/styles/apps.css" />
+  <style>
+    body {
+      margin: 0;
+      padding: 0 2vw;
+      font-family: var(--font-sans);
+      color: var(--fg);
+      background: var(--bg);
+      font-size: 1.15rem;
+      line-height: 1.75;
+      background-image: none;
+    }
+
+    main {
+      max-width: 100%;
+      margin: 0;
+      padding: 4rem 2vw 4rem 2vw;
+      display: block;
+    }
+
+    .content {
+      flex: 1;
+    }
+
+    section {
+      margin-bottom: 3rem;
+      padding: 0;
+      border: none;
+      background: none;
+      box-shadow: none;
+      width: 100%;
+    }
+
+    h1 {
+      font-size: 3rem;
+      color: var(--accent-blue);
+      font-family: var(--font-display);
+    }
+
+    h2 {
+      font-size: 2.2rem;
+      color: var(--accent-green);
+      margin-top: 3rem;
+      font-family: var(--font-display);
+    }
+
+    h3 {
+      font-size: 1.5rem;
+      color: var(--accent-peach);
+      margin-top: 2rem;
+    }
+
+    h4 {
+      font-size: 1.25rem;
+      margin-top: 1.5rem;
+      color: var(--accent-yellow);
+    }
+
+    img {
+      width: 100%;
+      max-width: 60%;
+      height: auto;
+      margin: 1.5rem 0;
+    }
+
+    ul {
+      padding-left: 1.5rem;
+    }
+
+    pre {
+      background: #1e1e2e;
+      color: #fff;
+      padding: 1rem;
+      border-radius: 8px;
+      overflow-x: auto;
+      font-size: 0.95rem;
+    }
+
+    .bg-diagonal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: repeating-linear-gradient(135deg, rgba(255,255,255,0.01) 0px, rgba(255,255,255,0.01) 1px, transparent 1px, transparent 20px);
+      background-size: 400% 400%;
+      animation: bgMove 30s linear infinite;
+      z-index: -1;
+      display: block;
+    }
+
+    @keyframes bgMove {
+      0%, 100% { background-position: 0% 0%; }
+      50% { background-position: 100% 100%; }
+    }
+
+    .logo-description-container {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .logo-description-container img {
+      flex-shrink: 0;
+      max-height: 100px;
+      width: auto;
+      margin: 0;
+    }
+    a.download-btn {
+  transition: all 0.2s ease-in-out;
+}
+
+a.download-btn:hover {
+  background-color: var(--accent-peach) !important;
+  transform: scale(1.05);
+  color: #ffffff;
+}
+.section-row {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.section-row .text {
+  flex: 1 1 55%;
+  min-width: 300px;
+}
+
+.section-row .image {
+  flex: 1 1 40%;
+  min-width: 300px;
+}
+
+.section-row .image img {
+  width: 100%;
+  height: auto;
+  border-radius: 0.5rem;
+}
+
+</style>
+</head>
+<body>
+  <div class="bg-diagonal"></div>
+  <button class="go-back-btn" onclick="history.back()">← Go Back</button>
+  <main>
+    
+    <section id="app-header" style="margin-bottom: 6rem; padding: 5rem 0.5rem; width: 1100px; margin-left: auto; margin-right: auto;background: rgba(255, 255, 255, 0.02); border-radius: 1rem; display: flex; justify-content: center; align-items: center;">
+  <div style="width: 100%; max-width: 620px; margin: 0 auto; display: flex; align-items: center; gap: 1.5rem; justify-content: center; flex-wrap: nowrap;">
+    <img src="/assets/presntor.png"
+     alt="Presntor Logo"
+     style="max-height: 250px;
+            width: auto;
+            margin-left: -8rem;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            padding: 0.1rem;
+            border-radius: 0.5rem;
+            background: rgba(255, 255, 255, 0.02);">
+
+    <div>
+      <h1 style="margin-top: 0; font-size: 2.5rem;">Presntor</h1>
+      <p style="font-size: 1.25rem; margin-top: 0.5rem;">A unified presentation manager console for live services, events, and productions. Control PowerPoint, display scriptures, and manage OBS all from one place.</p>
+      <a href="/resources/presntorinstaller.exe" class="download-btn" style="display: inline-block; margin-top: 1rem; padding: 0.75rem 1.5rem; background: var(--accent-blue); color: white; text-decoration: none; font-weight: bold; border-radius: 0.5rem; font-size: 1rem;">Download for Windows</a>
+    </div>
+  </div>
+</section>
+
+    
+    <div class="content">
+  
+
+      <h1 id="overview">Presntor Walkthrough</h1>
+
+      <section id="intro">
+        <h2>Intro / Hero Section</h2>
+        <h3><strong>Presntor</strong></h3>
+        <p><em>A complete presentation management console for live events, services, and productions.</em></p>
+        <p>Presntor is a desktop application designed to streamline the entire process of managing slides, media, scripture display, and live streaming for real-time events. It’s built as a unified tool that combines PowerPoint control, Bible verse automation, and OBS scene management — all within one cohesive interface.</p>
+        <p>Whether you're orchestrating a service, coordinating an event, or directing a live production, Presntor enables you to stage everything in advance and then run the entire session from a single screen, with minimal switching and maximum clarity.</p>
+        <h4>Key Capabilities:</h4>
+        <ul>
+          <li>Import and manage multiple PowerPoint presentations, images, or video files.</li>
+          <li>Combine slides from different sources into one seamless flow.</li>
+          <li>Present scripture directly using VerseView integration.</li>
+          <li>Switch OBS scenes, toggle sources, and control audio and streaming.</li>
+          <li>Instantly present one-off files through drag-and-drop Quick Present.</li>
+        </ul>
+        <p>Presntor is designed to reduce complexity and operator load by centralizing all presentation workflows into a focused, efficient interface.</p>
+        <img src="/assets/presntor/window.png" alt="Presntor Main Window">
+      </section>
+
+<section id="interface">
+  <h2>Section 1 – The Six Main Sections of the GUI</h2>
+  <h3>The Layout</h3>
+  <p>Presntor is divided into six logical sections that work together in real time to manage your session:</p>
+  <ol>
+    <li><strong>Top Button Controls</strong>: For adding files, launching presentations, stopping them, and navigating slides.</li>
+    <li><strong>Presentation List (Left Panel)</strong>: A scrollable thumbnail view of all added presentations, images, and videos.</li>
+    <li><strong>Current Slide (Center)</strong>: Displays the currently selected slide from your timeline, ready for presentation.</li>
+    <li><strong>Dynamic Right Panel</strong>: Changes based on mode selection (via dropdown): Slides, Bible Reading controls, or OBS interface.</li>
+    <li><strong>Master Slides Section (Bottom-Left)</strong>: This is where you build your session timeline by arranging slides.</li>
+    <li><strong>Quick Present Section (Bottom-Right)</strong>: For instantly presenting any file without adding it to the timeline.</li>
+  </ol>
+  <img src="/assets/presntor/openppts.png" alt="Presentation list and layout">
+</section>
+
+<section id="loading">
+  <h2>Section 2 – Loading Presentations</h2>
+  <h3>Add Slides, Images, or Videos</h3>
+  <p>Clicking “Add Presentation” opens a file dialog where you can select .pptx, .ppt, images, or videos. Each file type is handled as follows:</p>
+  <ul>
+    <li><strong>.ppt</strong> files are automatically converted to .pptx.</li>
+    <li><strong>Images</strong> are converted into one-slide presentations.</li>
+    <li><strong>Videos</strong> are listed and handled appropriately depending on where they are dropped.</li>
+    <li><strong>Thumbnails</strong> are generated for every file and added to the Presentation List panel.</li>
+  </ul>
+  <p>You can click a presentation to view all its slides in the right-side panel.</p>
+  <img src="/assets/presntor/fileopen.png" alt="Add Presentation File Dialogue">
+</section>
+
+<section id="master">
+  <h2>Section 3 – Master Slide Timeline</h2>
+  <h3>Build Your Presentation Session</h3>
+  <p>This section functions like a video editor’s timeline, allowing you to sequence slides from different sources in presentation order:</p>
+  <ul>
+    <li>Drag a full PPT into the timeline — a preview shows slide thumbnails before drop.</li>
+    <li>Slides from the same file are grouped and collapsible.</li>
+    <li>Each group has a collapse and delete button.</li>
+    <li>Single slides from the right panel (non-grouped) can be dragged into the timeline.</li>
+    <li>Slides and groups can be rearranged or deleted by drag or hover buttons.</li>
+    <li>The <strong>Clear Master</strong> button removes all timeline content.</li>
+    <li>Changes auto-merge into a new .pptx that maintains all transitions, themes, and animations.</li>
+  </ul>
+  <img src="/assets/presntor/addtomaster.png" alt="Slide drop preview">
+  <img src="/assets/presntor/previewdrop.png" alt="Slides drop with already present in Master">
+  <img src="/assets/presntor/previewdropped.png" alt="Slides added to Master">
+</section>
+
+<section id="presenting">
+  <h2>Section 4 – Presenting Slides</h2>
+  <h3>Select. Present. Navigate.</h3>
+  <p>Select a slide from the Master section to make it the <strong>Current Slide</strong>. Click “Present” or press <strong>Enter</strong> to start presenting from that slide in PowerPoint. Navigation options:</p>
+  <ul>
+    <li>Next Slide – Right Arrow or “Next” button</li>
+    <li>Previous Slide – Left Arrow or “Previous” button</li>
+    <li>Stop Presentation – “Stop” button or Escape key</li>
+  </ul>
+  <img src="/assets/presntor/selectcurrentslide.png" alt="Selected Current Slide">
+</section>
+
+<section id="quick-present">
+  <h2>Section 5 – Quick Present Section</h2>
+  <h3>Need Something Shown Immediately?</h3>
+  <p>The Quick Present panel allows fast drag-and-drop for files that must be shown instantly, bypassing the master timeline:</p>
+  <ul>
+    <li>Drop a PPT/Image to present it directly in PowerPoint</li>
+    <li>Drop a video to launch it full-screen in VLC</li>
+    <li>Clicking the panel also opens a file dialog for quick presenting</li>
+  </ul>
+  <p>If you want to add a video to the timeline, drag it into Master instead; it will be converted into a slide with embedded video.</p>
+</section>
+
+<section id="bible">
+  <h2>Section 6 – Bible Verse Mode</h2>
+  <h3>Display Scriptures Seamlessly</h3>
+  <p>When the dropdown is switched to “Bible Reading”, the right panel changes to VerseView controls. You can:</p>
+  <ul>
+    <li>Enter a Bible reference (e.g., John 3:16)</li>
+    <li>Click “Present Verse” to show it via VerseView</li>
+    <li>Use “Previous” / “Next” or arrow keys to navigate</li>
+    <li>Press Esc or “Stop” to clear the verse</li>
+  </ul>
+  <p>The dropdown reference selector is only used in a custom church version and is hidden in public builds.</p>
+  <img src="/assets/presntor/bibleReadingandSettings.png" alt="Bible Reading Mode">
+</section>
+
+<section id="bible-voice">
+  <h2>Section 7 – Voice-Controlled Bible Reading</h2>
+  <h3>Automatic Verse Changes Based on Speech</h3>
+  <p>Click “Start Recognition” to begin microphone listening. Presntor uses Google Speech-to-Text to transcribe audio and decide when to trigger “Next Verse”. Matching is based on:</p>
+  <ul>
+    <li>Levenshtein Distance + Partial Match</li>
+    <li>Partial Match + Keyword Match (last 3 words)</li>
+    <li>Levenshtein + Keyword</li>
+  </ul>
+  <p>Settings let you configure:</p>
+  <ul>
+    <li>Microphone input</li>
+    <li>Sample rate</li>
+    <li>Levenshtein and partial thresholds</li>
+    <li>VerseView control URL</li>
+  </ul>
+  <p>Ensure you’ve created a <code>biblereadingspeech.json</code> with your Google API credentials and set the URL (e.g., http://192.168.122.111:5050/control.html).</p>
+</section>
+
+<section id="obs">
+  <h2>Section 8 – OBS Integration</h2>
+  <h3>Full OBS Studio Control Without Leaving the App</h3>
+  <p>Switch the dropdown to “OBS Control Mode” and use the live OBS preview to:</p>
+  <ul>
+    <li>View current OBS preview scene</li>
+    <li>Click Scene Buttons to switch scenes</li>
+    <li>Trigger a fade/cut transition</li>
+    <li>Use tabs below to control source visibility or mute/unmute audio inputs</li>
+    <li>Start/Stop streaming and open OBS Settings</li>
+  </ul>
+  <p>Presntor communicates with OBS via WebSocket and continuously updates its interface.</p>
+  <img src="/assets/presntor/obsPreview.png" alt="OBS Preview Mode">
+  <img src="/assets/presntor/obsscene2.png" alt="OBS Scene Change">
+  <img src="/assets/presntor/audioSourcesandSettings.png" alt="OBS WebSocket Settings">
+</section>
+
+<section id="technical">
+  <h2>Section 9 – Under the Hood</h2>
+  <h3>How It Works Behind the Scenes</h3>
+  <ul>
+    <li><strong>PowerPoint</strong> control uses COM Automation and pywin32 to merge slides and maintain formatting.</li>
+    <li><strong>Preview thumbnails</strong> are generated from exported PNGs.</li>
+    <li><strong>OBS integration</strong> communicates via WebSocket API.</li>
+    <li><strong>VerseView control</strong> is done via HTTP commands.</li>
+    <li><strong>Speech Recognition</strong> uses Google Speech-to-Text and match thresholds.</li>
+    <li>All background processing is done in threads to avoid UI blocking.</li>
+  </ul>
+</section>
+
+<section id="built-for-church">
+  <h2>Section 10 – Built For My Church</h2>
+  <h3>Why I Built Presntor</h3>
+  <p>We used to run services juggling three different apps — one for slides, one for scriptures, and one for OBS streaming. It took multiple volunteers and a lot of coordination just to make it work. I built Presntor to unify all of that.</p>
+  <p>Now, everything — slides, scripture, stream control — can be run from a single app by one person, without the stress.</p>
+  <p>I’m releasing Presntor publicly to help others who need the same solution — and to show the kind of complete, end-to-end systems I design and develop.</p>
+</section>
+</div>
+<section class="comments">
+  <h2>Comments</h2>
+  <div id="giscus_container"></div>
+</section>
+  </main>
+</body>
+</html>

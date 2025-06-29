@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Smart AI-Based Traffic Management System</title>
+  <link rel="stylesheet" href="/styles/music-games.css"/>
+  <style>
+    /* Force minimal spacing on everything */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+  
+    body {
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      padding: 1rem 3vw;
+      max-width: 1600px;
+      margin: auto;
+      font-size: 1rem;
+      line-height: 1.45;
+      color: var(--fg);
+    }
+  
+    h1 {
+      font-size: 3.5rem;
+      color: var(--accent-blue);
+      margin: 0.3rem 0 0.2rem;
+    }
+  
+    h2 {
+      font-size: 1.5rem;
+      color: var(--accent-green);
+      margin: 0.5rem 0 0.2rem;
+    }
+  
+    h3 {
+      font-size: 1.1rem;
+      color: var(--accent-peach);
+      margin: 0.4rem 0 0.1rem;
+    }
+  
+    p {
+      margin: 0.2rem 0;
+    }
+  
+    ul {
+      padding-left: 1.2rem;
+      margin: 0.2rem 0;
+    }
+  
+    li {
+      margin: 0.2rem 0;
+    }
+  
+    .section {
+      margin-bottom: 0.5rem !important;
+      padding: 0 !important;
+    }
+  
+    .project-images img {
+      width: 100%;
+      max-width: 800px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      margin: 0.4rem 0;
+    }
+  
+    header {
+      margin-bottom: 0.8rem;
+    }
+  
+    @media (max-width: 900px) {
+      .project-images img {
+        width: 100%;
+      }
+    }
+
+    .go-back-btn {
+  position: fixed;
+  top: 1.5rem;
+  left: 1rem;
+  padding: 0.5rem 1rem;
+  background: var(--accent-blue);
+  color: var(--bg);
+  border-radius: var(--radius);
+  font-family: var(--font-display);
+  font-size: 1rem;
+  text-decoration: none;
+  transition: background 0.3s ease;
+  z-index: 100;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.go-back-btn:hover {
+  background: var(--accent-peach);
+  color: var(--bg);
+}
+  </style>
+  
+</head>
+<body>
+
+  <h1>Smart AI-Based Traffic Management System (WIP)</h1>
+  <p><strong>This project improves on the already existing preset traffic light timers by dynamically predicting time based on the number of vehicles available.</strong></p>
+
+  <button class="go-back-btn" onclick="history.back()">← Go Back</button>
+
+  <div class="section">
+    <h2>Overview</h2>
+    <p>
+      We built this system during <strong>Smart India Hackathon 2024</strong> as a team of 6. It's a work-in-progress solution that leverages AI to take over the role of traffic police operators who manually press buttons inside booths to change signals during peak hours (yes, this still happens).
+    </p>
+    <p>
+      Instead of static light timers or maunal buttons, this system detects vehicle density from existing CCTV feeds and intelligently adjusts traffic signal durations. No additional infrastructure is needed — just plug in the model and let it watch.
+    </p>
+    <p>
+      It’s smarter, faster, fairer, and doesn’t need breaks.
+    </p>
+  </div>
+
+  <div class="section">
+    <h2>How It Works</h2>
+    <p>
+      A frame is captured from each camera and passed to an <strong>EfficientDet-Lite3</strong> model. It identifies and counts vehicles across six classes: <em>car, bike, rickshaw, cart, truck, ambulance</em>. EfficientDet was chosen over YOLO because it handled occlusions and stacked vehicles more accurately — something critical for tight Indian intersections.
+    </p>
+    <p>
+      EfficientDet builds on EfficientNet with compound scaling and BiFPN — which makes it surprisingly performant on edge devices or cloud VMs. We’ve run it smoothly even on lower-powered hardware.
+    </p>
+    <p>
+      The number of vehicles is then used to estimate a signal time using a <strong>Decision Tree Regressor</strong>. If at least one vehicle is detected, a minimum time of 15 seconds is assigned; if zero, the signal is skipped. Everything rotates in a round-robin loop with configurable maximums (60 or 120s).
+    </p>
+    <p>
+      To go one step further, we use an <strong>LSTM</strong> model to refine predictions based on the time of day and historical traffic data collected manually from real signals in our area. It helps capture rush hour patterns that repeat daily and weekly.
+    </p>
+  </div>
+
+  <div class="section">
+    <h2>Signal Timing Logic</h2>
+    <h3>Workflow</h3>
+    <ul>
+      <li><strong>Green Light (T<sub>g</sub>)</strong>: Predicted based on detected vehicles</li>
+      <li><strong>Yellow Light (T<sub>y</sub>)</strong>: Constant, often 5 seconds</li>
+      <li><strong>Next Signal Red (T<sub>r</sub>)</strong>: T<sub>g</sub> + T<sub>y</sub></li>
+      <li><strong>Next Green (T<sub>g2</sub>)</strong>: T<sub>g1</sub> + T<sub>g</sub></li>
+      <li><strong>Cumulative (T<sub>gn</sub>)</strong>: Sum of all previous greens for round-robin fairness</li>
+    </ul>
+    <p>
+      This cascading logic ensures that each intersection gets time proportionally, based on how busy it actually is.
+    </p>
+  </div>
+
+  <div class="section">
+    <h2>Development Story</h2>
+    <p>
+      This project is what happens when you say “how hard could traffic lights be?” and then lose three weeks to annotation, debugging loss shapes, and writing a collate function that doesn’t crash PyTorch.
+    </p>
+    <p>
+      We had to <strong>manually annotate a custom dataset</strong> in Pascal VOC, then convert it to COCO and TFRecord (because why pick one format when you can juggle three?). We trained EfficientDet with Focal Loss, which was fun until cross-entropy started throwing dimension mismatches. Oh, and we wrote our own logic to trim prediction boxes and filter out garbage detections.
+    </p>
+    <p>
+      The collate function alone — that deserves its own grave marker. Eventually, it worked. Mostly.
+    </p>
+    <p>
+      For LSTM training, we collected data from real junctions by literally standing there, noting traffic counts by hand. In the heat. During traffic. True field work fr fr ong no cap. (Traffic police have it hard having to do this all day)
+    </p>
+  </div>
+
+  <div class="section">
+    <h2>Demo Snapshot</h2>
+    <div class="project-images">
+      <img src="/assets/trafficdetection/Figure_1.png" alt="Live Detection Output – Traffic Signal AI">
+    </div>
+    <p style="font-style: italic;">
+      Above: Live detection output. Vehicles boxed and counted(boxes are uhh, just a little offset to the top-left). Signal durations predicted automatically.
+    </p>
+  </div>
+
+  <div class="section">
+    <h2>What’s Next?</h2>
+    <ul>
+      <li>Fragment the model to run at each junction, with inference happening on-device</li>
+      <li>Intercommunicate signals via a centralized hub or cloud sync</li>
+      <li>Automatically switch models or thresholds based on environmental context (e.g., rain, emergency)</li>
+      <li>Deploy to actual traffic signals in pilot locations (if we get permission)</li>
+      <li>Make the system public — and let others contribute local data</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>Repository</h2>
+    <a href="https://github.com/allanhanan/VehicleDetectionEffdet/tree/sideProject" target="_blank" style="
+    display: inline-flex;
+    width: fit-content;
+    align-items: center;
+    background: var(--accent-blue);
+    color: var(--bg);
+    padding: 0.4rem 0.75rem;
+    border-radius: 999px;
+    font-weight: 500;
+    font-size: 1rem;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    gap: 0.3rem;"
+    onmouseover="this.style.background='var(--accent-peach)'"
+    onmouseout="this.style.background='var(--accent-blue)'"
+  >
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+    <path d="M12 0C5.37 0 0 5.373 0 12c0 5.302 3.438 9.8 8.205 11.387.6.113.82-.26.82-.577 
+             0-.285-.01-1.04-.015-2.04-3.338.726-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.756-1.333-1.756-1.09-.745.084-.73.084-.73 
+             1.205.084 1.84 1.237 1.84 1.237 1.07 1.835 2.807 1.305 3.492.998.108-.775.42-1.306.763-1.606-2.665-.305-5.466-1.334-5.466-5.933 
+             0-1.31.465-2.382 1.235-3.222-.124-.303-.535-1.527.117-3.176 
+             0 0 1.008-.322 3.3 1.23a11.5 11.5 0 0 1 3.003-.403c1.02.005 2.047.137 3.003.403 
+             2.29-1.552 3.297-1.23 3.297-1.23.653 1.65.242 2.873.12 3.176.77.84 1.233 1.913 1.233 3.222 
+             0 4.61-2.803 5.625-5.475 5.922.43.37.823 1.1.823 2.222 
+             0 1.606-.015 2.898-.015 3.292 0 .32.217.694.825.576C20.565 21.796 
+             24 17.298 24 12c0-6.627-5.373-12-12-12z"/>
+  </svg>
+  GitHub
+</a>
+
+    
+  </div>
+  
+  <section class="comments">
+    <h2>Comments</h2>
+    <div id="giscus_container"></div>
+  </section>
+</body>
+</html>

@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ponzi Scheme Detection</title>
+  <link rel="stylesheet" href="/styles/music-games.css" />
+  <style>
+    body {
+      padding: 2rem 4vw;
+      max-width: 1600px;
+      margin: auto;
+      font-size: 1.05rem;
+      font-family: var(--font-sans);
+      color: var(--fg);
+      line-height: 1.75;
+    }
+
+    h1 {
+      font-size: 3rem;
+      color: var(--accent-blue);
+      margin-bottom: 1.5rem;
+    }
+
+    h2 {
+      font-size: 2rem;
+      color: var(--accent-green);
+      margin-top: 3rem;
+    }
+
+    h3 {
+      font-size: 1.4rem;
+      color: var(--accent-peach);
+      margin-top: 2rem;
+    }
+
+    pre {
+      background: #1e1e2e;
+      color: #fff;
+      padding: 1rem;
+      border-radius: 8px;
+      overflow-x: auto;
+      font-size: 0.95rem;
+    }
+
+    code {
+      background: #1e1e2e;
+      color: #fff;
+      padding: 0.2rem 0.4rem;
+      border-radius: 4px;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin: 1rem 0;
+    }
+
+    th, td {
+      border: 1px solid var(--border);
+      padding: 0.75rem;
+      text-align: left;
+    }
+
+    img {
+      width: 40%;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      margin-top: 1rem;
+    }
+
+    ul {
+      padding-left: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .go-back-btn {
+      position: fixed;
+      top: 1.5rem;
+      left: 1rem;
+      padding: 0.5rem 1rem;
+      background: var(--accent-blue);
+      color: var(--bg);
+      border-radius: var(--radius);
+      font-family: var(--font-display);
+      font-size: 1rem;
+      text-decoration: none;
+      transition: background 0.3s ease;
+      z-index: 100;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .go-back-btn:hover {
+      background: var(--accent-peach);
+      color: var(--bg);
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-diagonal"></div>
+  <a class="go-back-btn" href="javascript:history.back()">← Go Back</a>
+
+  <h1>Ponzi Scheme Detection</h1>
+
+  <p>This program checks if an investment scheme looks like a Ponzi. It uses NLP to pull features out of the text, scores the risk using a small neural network, and classifies the result using a random forest. Output is one of: <code>Ponzi</code>, <code>Likely Ponzi</code>, or <code>Not Ponzi</code>.</p>
+
+  <a href="https://github.com/Vijay-31-08-2005/ponzi-scheme-detection" class="github-btn" target="_blank" style="
+  display: inline-flex;
+  align-items: center;
+  background: var(--accent-blue);
+  color: var(--bg);
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  font-weight: 500;
+  font-size: 1rem;
+  text-decoration: none;
+  gap: 0.4rem;
+  margin-top: 0.8rem;
+  transition: background 0.2s ease;">
+  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+    <path d="M12 0C5.37 0 0 5.373 0 12c0 
+    5.302 3.438 9.8 8.205 11.387.6.113.82-.26.82-.577 
+    0-.285-.01-1.04-.015-2.04-3.338.726-4.042-1.61-4.042-1.61
+    -.546-1.387-1.333-1.756-1.333-1.756-1.09-.745.084-.73.084-.73 
+    1.205.084 1.84 1.237 1.84 1.237 
+    1.07 1.835 2.807 1.305 3.492.998.108-.775.42-1.306.763-1.606
+    -2.665-.305-5.466-1.334-5.466-5.933 
+    0-1.31.465-2.382 1.235-3.222-.124-.303-.535-1.527.117-3.176 
+    0 0 1.008-.322 3.3 1.23a11.5 11.5 0 0 1 3.003-.403 
+    c1.02.005 2.047.137 3.003.403 
+    2.29-1.552 3.297-1.23 3.297-1.23.653 1.65.242 2.873.12 3.176 
+    .77.84 1.233 1.913 1.233 3.222 
+    0 4.61-2.803 5.625-5.475 5.922 
+    .43.37.823 1.1.823 2.222 
+    0 1.606-.015 2.898-.015 3.292 
+    0 .32.217.694.825.576C20.565 21.796 
+    24 17.298 24 12c0-6.627-5.373-12-12-12z"/>
+  </svg>
+  GitHub
+</a>
+
+  <h2>Project Structure</h2>
+  <table>
+    <tr><th>File/Folder</th><th>Description</th></tr>
+    <tr><td><code>train.py</code></td><td>Main script for training or running inference on one scheme.</td></tr>
+    <tr><td><code>models/</code></td><td>Contains the Keras return risk model and scaler.</td></tr>
+    <tr><td><code>data/</code></td><td>Text samples labeled as Ponzi, Likely, or Not Ponzi.</td></tr>
+    <tr><td><code>ponzi_scheme_classifier.pkl</code></td><td>Trained random forest saved after training.</td></tr>
+  </table>
+
+  <h2>Dependencies</h2>
+  <ul>
+    <li>Python 3.10+</li>
+    <li>Libraries: flask, pandas, numpy, scikit-learn, tensorflow, torch, joblib, nltk, spacy, transformers, sentence-transformers</li>
+  </ul>
+
+  <h2>Installation</h2>
+  <pre><code>git clone https://github.com/Vijay-31-08-2005/ponzi-scheme-detection.git
+cd ponzi-scheme-detection
+pip install -r requirements.txt</code></pre>
+
+  <h3>Setup Commands</h3>
+  <pre><code>python -m spacy download en_core_web_sm</code></pre>
+  <pre><code>import nltk
+nltk.download('vader_lexicon')</code></pre>
+
+  <h2>Dataflow Pipeline</h2>
+  <pre><code>[.txt scheme file or form input]
+        ↓
+  parse_scheme_text()
+    - Named Entity Recognition (spaCy)
+    - Question Answering (HuggingFace)
+    - Heuristics + Regex
+    - Sentiment Analysis (VADER)
+    - Semantic Scam Score (Sentence-BERT)
+        ↓
+  Extracted Features:
+    - company_name
+    - promised_return_percent
+    - return_frequency_days
+    - time_to_roi_days
+    - minimum_deposit_usd
+    - referral_pressure
+    - whitepaper_available
+    - team_members
+    - sentiment_score
+    - scam_keyword_density
+    - crypto_only
+        ↓
+  calculate_return_risk()
+    - Uses 4 ROI stats
+    - Keras model outputs risk_score ∈ [0, 1]
+        ↓
+  Random Forest Classifier
+    - Input: all features + risk_score
+    - Output:
+        - classification (Ponzi / Likely / Not)
+        - class probabilities
+  </code></pre>
+
+  <h2>Usage</h2>
+
+  <h3>Train the Return Risk Neural Network</h3>
+  <pre><code>python models/return_risk.py</code></pre>
+  <p>This trains on <code>return_risk_training_data.csv</code> and saves:</p>
+  <ul>
+    <li><code>tf_return_risk_model.keras</code></li>
+    <li><code>tf_return_risk_scaler.pkl</code></li>
+  </ul>
+
+  <h3>Train the Ponzi Classifier</h3>
+  <pre><code>python train.py</code></pre>
+  <p>Loads all .txt files from <code>data/</code>, extracts features, scores them, and fits the Random Forest classifier.</p>
+
+  <h2>Running</h2>
+
+  <h3>Start the Web App</h3>
+  <pre><code>python run.py</code></pre>
+  <p>Then go to <a href="http://127.0.0.1:5000" target="_blank">http://127.0.0.1:5000</a></p>
+
+  <h3>Steps:</h3>
+  <ol>
+    <li>Paste your scheme description</li>
+    <li>Click “Analyze Scheme”</li>
+    <li>See risk score + prediction</li>
+    <li>Click “Show More” for the raw breakdown</li>
+  </ol>
+
+  <h3>Web App Demo</h3>
+  <img src="https://res.cloudinary.com/duff0nokr/image/upload/v1747500171/ponziwebappdemo_srxwly.gif" alt="Web App Demo"/>
+
+  <h2>Run Inference on a Single File</h2>
+  <pre><code>python train.py path/to/scheme.txt</code></pre>
+
+  <h3>Sample Input</h3>
+<pre><code>Skyline Development Fund pays a stable 4.5% monthly return, with capital doubled in just under 500 days. Minimum investment: $10,000. Our whitepaper outlines our urban development strategy, with detailed insights into our projects. Founders: Olivia Greene (Real Estate Director), Samuel Adams (Finance Manager). Investments are backed by prime real estate developments in growing metropolitan areas. Fully compliant with local regulations. No referral programs. Fiat and stablecoin payments accepted. Track your investment growth through our investor portal.</code></pre>
+
+
+  <h3>Sample Output</h3>
+  <pre><code>Parameters:
+company_name: Skyline Development Fund
+promised_return_percent: 4.0
+return_frequency_days: 30
+time_to_roi_days: 500
+minimum_deposit_usd: 10000
+referral_pressure: 1
+whitepaper_available: 1
+team_members: 1
+sentiment_score: 0.6705
+scam_keyword_density: 0.0
+crypto_only: 0
+
+Risk Score: 0.027123991
+
+Classification: Not Ponzi
+
+Probabilities:
+Not Ponzi: 0.0472
+Likely Ponzi: 0.9459
+Ponzi: 0.0068</code></pre>
+
+
+<section class="comments">
+    <h2>Comments</h2>
+    <div id="giscus_container"></div>
+  </section>
+  
+</body>
+</html>

@@ -1,0 +1,236 @@
+:root {
+    --bg: #11111b;
+    --bg-alt: #181825;
+    --fg: #cdd6f4;
+    --fg-muted: #a6adc8;
+    --accent-peach: #fab387;
+    --accent-green: #39ff14;
+    --accent-blue: #00e0ff;
+    --glass: rgba(255, 255, 255, 0.05);
+    --border: rgba(255, 255, 255, 0.12);
+    --radius: 12px;
+    --font-sans: 'DM Sans', system-ui, sans-serif;
+    --font-display: 'Space Grotesk', sans-serif;
+  }
+  
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--font-sans);
+    overflow-x: hidden;
+  }
+  
+  /* ─── Background Animation ─── */
+  .bg-diagonal {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(
+      135deg,
+      var(--bg) 0%,
+      var(--bg-alt) 25%,
+      var(--bg) 50%,
+      var(--bg-alt) 75%,
+      var(--bg) 100%
+    );
+    background-size: 400% 400%;
+    animation: bgMove 12s ease infinite;
+  }
+  
+  @keyframes bgMove {
+    0%, 100% { background-position: 0% 0%; }
+    50% { background-position: 100% 100%; }
+  }
+  
+  /* ─── Layout ─── */
+  .track-container {
+    padding: 6rem 8vw 4rem;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  
+  .track-info {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3rem;
+    background: var(--glass);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    backdrop-filter: blur(30px) saturate(120%);
+    padding: 2.5rem;
+  }
+  
+  .track-thumb {
+    width: 280px;
+    height: 280px;
+    object-fit: cover;
+    border-radius: 8px;
+    background: #222;
+    flex-shrink: 0;
+  }
+  
+  .track-meta {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 1rem;
+  }
+  
+  .track-meta h1 {
+    font-family: var(--font-display);
+    font-size: 2.4rem;
+    color: var(--accent-blue);
+    margin: 0 0 0.5rem;
+  }
+  
+  .description {
+    font-size: 1.05rem;
+    color: var(--fg-muted);
+    line-height: 1.6;
+    max-width: 60ch;
+  }
+  
+  .description a {
+    color: var(--accent-green);
+    text-decoration: none;
+    border-bottom: 1px dashed var(--accent-green);
+  }
+  
+  .description a:hover {
+    color: var(--accent-peach);
+    border-bottom-style: solid;
+  }
+  
+  audio {
+    margin-top: 1rem;
+    width: 100%;
+  }
+  
+  .download-btn {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 0.6rem 1.2rem;
+    background: var(--accent-blue);
+    color: var(--bg);
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: var(--radius);
+    font-family: var(--font-display);
+    transition: background 0.3s ease;
+    width: fit-content;
+  }
+  
+  .download-btn:hover {
+    background: var(--accent-peach);
+  }
+  
+  /* ─── Comments ─── */
+  .comments {
+    margin-top: 4rem;
+  }
+  
+  .comments h2 {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    color: var(--accent-peach);
+    margin-bottom: 1rem;
+  }
+  
+  #giscus_container {
+    margin-top: 1rem;
+  }
+  
+  /* ─── Responsive ─── */
+  @media (max-width: 768px) {
+    .track-info {
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    .track-thumb {
+      width: 100%;
+      height: auto;
+    }
+  
+    .track-meta {
+      width: 100%;
+    }
+  }
+
+  .go-back-btn {
+    position: fixed;
+    top: 1.5rem;
+    left: 1.5rem;
+    padding: 0.4rem 1rem;
+    background: var(--accent-blue);
+    color: var(--bg);
+    border: none;
+    border-radius: var(--radius);
+    font-family: var(--font-display);
+    font-size: 1rem;
+    text-decoration: none;
+    z-index: 100;
+    transition: background 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  }
+  
+  .go-back-btn:hover {
+    background: var(--accent-peach);
+    color: var(--bg);
+  }
+
+  .bg-diagonal {
+    position: fixed;
+    inset: 0;
+    z-index: -1;  /* Ensure it stays behind the content */
+    background: linear-gradient(
+      135deg,
+      var(--bg) 0%,
+      var(--bg-alt) 25%,
+      var(--bg) 50%,
+      var(--bg-alt) 75%,
+      var(--bg) 100%
+    );
+    background-size: 400% 400%;
+    animation: bgMove 50s ease infinite;
+  }
+
+@keyframes bgMove {
+    0%, 100% { background-position: 0% 0%; }
+    50% { background-position: 100% 100%; }
+}
+
+
+html, body {
+    position: relative;
+    z-index: 0;
+  }
+
+    /* ─── Custom Scrollbar (WebKit) ───────────────────── */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #181825; /* Mantle */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #1e1e2e; /* Base */
+  border-radius: 8px;
+  border: 2px solid #181825; /* Mantle (for padding) */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #313244; /* Slightly lighter when hovered */
+}
+
+/* ─── Firefox Scrollbar ───────────────────────────── */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #313244 #181825; /* thumb, track */
+}

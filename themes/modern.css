@@ -1,0 +1,462 @@
+:root {
+    --bg: #11111b;
+    --bg-alt: #181825;
+    --fg: #cdd6f4;
+    --fg-muted: #a6adc8;
+    --accent-green: #39ff14;
+    --accent-blue: #00e0ff;
+    --glass: rgba(255,255,255,0.05);
+    --border: rgba(255,255,255,0.12);
+    --radius: 12px;
+    --font-sans: 'DM Sans', system-ui, sans-serif;
+    --font-display: 'Space Grotesk', sans-serif;
+  }
+  
+  /* Reset + Base */
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+  body {
+    font-family: var(--font-sans);
+    color: var(--fg);
+    position: relative;
+    background: var(--bg);
+  }
+
+  /* Hide scrollbar but allow scrolling */
+body::-webkit-scrollbar {
+    display: none;
+  }
+  body {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;     /* Firefox */
+  }
+  .sections {
+    height: 100%;
+    overflow-y: scroll;
+    scroll-snap-type: y mandatory;
+  
+    /* Hide scrollbar in all browsers */
+    scrollbar-width: none;            /* Firefox */
+    -ms-overflow-style: none;         /* IE/Edge */
+  }
+  
+  .sections::-webkit-scrollbar {
+    display: none;                    /* Chrome/Safari */
+  }
+  
+  
+  
+  /* Background */
+  .bg-diagonal {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(
+      135deg,
+      var(--bg) 0%,
+      var(--bg-alt) 25%,
+      var(--bg) 50%,
+      var(--bg-alt) 75%,
+      var(--bg) 100%
+    );
+    background-size: 400% 400%;
+    animation: bgMove 12s ease infinite;
+  }
+  @keyframes bgMove {
+    0%, 100% { background-position: 0% 0%; }
+    50% { background-position: 100% 100%; }
+  }
+  
+  /* Scroll Sections */
+  .sections {
+    height: 100%;
+    overflow-y: scroll;
+    scroll-snap-type: y mandatory;
+  }
+  .section {
+    height: 100vh;
+    scroll-snap-align: start;
+    display: grid;
+    place-items: center;
+    padding: 3rem;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity .6s ease, transform .6s ease;
+  }
+  .section.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+/* Hero Layout */
+.intro {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    grid-template-rows: auto 1fr auto;
+    grid-template-areas:
+      "hero about"
+      "hero nav"
+      ". nav";
+    align-items: center;
+    gap: 2rem 4rem;
+    padding: 4rem;
+    height: 100vh;
+  }
+  
+  /* Hero Block */
+  .hero-text {
+    grid-area: hero;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .hero-text h1 {
+    font-family: var(--font-display);
+    font-size: clamp(5rem, 12vw, 9rem);
+    color: var(--accent-blue);
+    line-height: 1.05;
+  }
+  .hero-text p {
+    margin-top: 1.5rem;
+    font-size: 1.25rem;
+    color: var(--fg-muted);
+    max-width: 40ch;
+  }
+  
+  /* About Block */
+  .about-text {
+    grid-area: about;
+    align-self: end;
+    padding-bottom: 2rem;
+  }
+  .about-text h2 {
+    font-family: var(--font-display);
+    font-size: clamp(2.2rem, 6vw, 3.5rem);
+    color: var(--accent-green);
+    margin-bottom: 0.5rem;
+  }
+  .about-text p {
+    font-size: 1rem;
+    color: var(--fg-muted);
+    max-width: 30ch;
+    line-height: 1.6;
+  }
+  
+/* ─── Hover Trigger ─── */
+.hover-trigger {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 10vw;
+    height: 100vh;
+    z-index: 40;
+  }
+  
+  /* ─── Blur Overlay ─── */
+  .blur-overlay {
+    position: fixed;
+    inset: 0;
+    backdrop-filter: blur(20px);
+    background: rgba(10, 10, 10, 0.35);
+    z-index: 35;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+  .blur-overlay.blurred {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  
+  /* ─── Nav Cards Container ─── */
+  .nav-cards {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 50;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 3rem;
+  
+    padding: 6rem 7rem;
+  
+    background: rgba(255, 255, 255, 0.04);
+  
+    border: 1px solid var(--border);
+    border-radius: 24px;
+  
+    backdrop-filter: blur(50px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+  }
+
+
+  
+  .nav-cards.revealed {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  
+/* ─── Individual Card ─── */
+.nav-cards .card {
+    background: rgba(50, 50, 60, 0.2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    backdrop-filter: blur(20px) saturate(130%);
+    padding: 2rem 2rem 1.5rem;
+    width: 280px;
+    height: 200px;
+    text-align: center;
+    opacity: 0;
+    transform: scale(1);
+    animation: cardFadeIn 0.4s ease forwards;
+    transition: background 0.3s ease;
+  
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+  }
+  
+  /* Ensure no underline and proper layout */
+  .nav-cards .card h3,
+  .nav-cards .card p {
+    text-decoration: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Title pinned near top with subtle spacing */
+  .nav-cards .card h3 {
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    color: var(--accent-green);
+    letter-spacing: 0.5px;
+    padding-top: 0.2rem;
+  }
+  
+  /* Text centered vertically within the card */
+  .nav-cards .card p {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.1rem;
+    color: var(--fg-muted);
+    line-height: 1.4;
+    width: 90%;
+  }
+  
+
+  .nav-cards.revealed .card {
+    opacity: 1;
+  }
+  .nav-cards .card:hover {
+    background: rgba(17, 17, 27, 0.80);
+    backdrop-filter: blur(12px);
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  
+  /* ─── Card Text ─── */
+  .card h3 {
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    color: var(--accent-green);
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.5px;
+  }
+  .card a {
+    color: var(--fg-muted);
+    font-size: 1.1rem;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+  .card a:hover {
+    color: var(--accent-blue);
+  }
+  
+  /* ─── Fade In Keyframes ─── */
+  @keyframes cardFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+/* Quote section with full height and centered quote */
+.quote {
+    position: relative;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 0 2rem;
+    transform: translateY(-6px);
+  }
+  
+  /* Centered quote text */
+  .quote .quote-text {
+    font-family: var(--font-display);
+    font-size: clamp(2.4rem, 6vw, 3.4rem);
+    color: var(--fg);
+    line-height: 1.4;
+    font-weight: 100;
+    max-width: 50ch;
+    margin: 0 auto;
+  }
+  
+  .quote .author {
+    position: absolute;
+    bottom: 2rem;
+    right: 2rem;
+    font-size: 1rem;
+    color: var(--fg-muted);
+    font-style: italic;
+    opacity: 0.85;
+  }
+  
+
+  .floating-theme-toggle {
+    position: fixed;
+    bottom: 2rem;
+    left: 2rem;
+    display: flex;
+    gap: 0.75rem;
+    z-index: 100;
+  }
+  
+  .floating-theme-toggle button {
+    background: var(--glass);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--fg);
+    padding: 0.5rem 1rem;
+    font-family: var(--font-display);
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+  }
+  
+  .floating-theme-toggle button:hover {
+    background: var(--accent-blue);
+    color: var(--bg);
+  }
+  
+  #workingOn {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    z-index: 50;
+  
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    color: #c7c9d3;
+  
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+  
+    white-space: pre-wrap;
+    pointer-events: none;
+  }
+  
+  #workingOn h4 {
+    font-size: 0.75rem;
+    font-weight: 500;
+    opacity: 0.6;
+    margin: 0 0 0.15rem 0;
+    color: #7de37d;
+    letter-spacing: 0.15em;
+  }
+  
+  #workingOn p {
+    font-size: 0.92rem;
+    font-weight: 400;
+    color: #d4d7e1;
+    margin: 0;
+    max-width: 420px;
+    animation: fadeIn 0.5s ease;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .hover-cue {
+    position: absolute;
+    right: 3rem;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.3rem;
+    opacity: 0;
+    pointer-events: none;
+    animation: showCue 1s ease 5s forwards, driftLoop 5s ease-in-out infinite;
+    z-index: 10;
+    transition: opacity 0.5s ease;
+  }
+  
+  .hover-cue.hidden {
+    display: none;
+  }
+  
+  .hover-cue img {
+    transform: rotate(90deg);
+    filter: brightness(0) invert(1) blur(0.4px); 
+    width: 24px;
+    height: 24px;
+  }
+  
+  .hover-cue .hover-text {
+    font-family: 'Fredoka', sans-serif;
+    font-size: 0.90rem;
+    color: white;
+    transform: rotate(-4deg);
+    opacity: 0.85;
+    animation: textFloat 3.6s ease-in-out infinite;
+    letter-spacing: 0.03em;
+  }
+  
+  @keyframes showCue {
+    to {
+      opacity: 1;
+    }
+  }
+  
+  @keyframes driftLoop {
+    0%   { transform: translateY(-50%) translateX(0px); }
+    20%  { transform: translateY(-51%) translateX(3px); }
+    40%  { transform: translateY(-49%) translateX(-2px); }
+    60%  { transform: translateY(-52%) translateX(1px); }
+    80%  { transform: translateY(-50%) translateX(-3px); }
+    100% { transform: translateY(-50%) translateX(0px); }
+  }
+  
+  @keyframes textFloat {
+    0%   { transform: rotate(-4deg) translateY(0); }
+    50%  { transform: rotate(-4deg) translateY(4px); }
+    100% { transform: rotate(-4deg) translateY(0); }
+  }
+  

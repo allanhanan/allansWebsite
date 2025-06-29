@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Apps & Projects</title>
+  <link rel="stylesheet" href="/styles/music-games.css" />
+  <link rel="stylesheet" href="/styles/apps.css" />
+</head>
+<body>
+  <div class="bg-diagonal"></div>
+
+  <header class="apphub-header">
+    <h1>Apps & Projects</h1>
+    <p>Tools, experiments, utilities, and other works in progress.</p>
+  </header>
+
+  <main class="project-list" id="project-list">
+    <!-- Project cards will be injected here -->
+  </main>
+
+  <a href="/index.html" class="floating-back-button" aria-label="Go to homepage">🏠</a>
+
+  <script>
+    const fallbackThumb = "/assets/placeholder.png";
+  
+    const renderProjectCard = (project) => {
+      const {
+        title = "Untitled Project",
+        description = "No description available.",
+        thumbnail = fallbackThumb,
+        tags = [],
+        link = null,
+        repo = null
+      } = project;
+  
+      const tagHTML = tags.map(tag => `<span class="tag">${tag}</span>`).join("");
+      const repoLink = repo
+        ? `<a href="${repo}" class="repo-link" target="_blank" onclick="event.stopPropagation()">Source Code</a>`
+        : "";
+  
+      // Combine content inside a consistent .project-card regardless of tag
+      const cardInner = `
+        <img class="project-thumb" src="${thumbnail}" alt="${title}" onerror="this.src='${fallbackThumb}'"/>
+        <div class="project-details">
+          <h2>${title}</h2>
+          <p>${description}</p>
+          <div class="tag-list">${tagHTML}</div>
+          ${repoLink}
+        </div>
+      `;
+  
+      // Always use <div class="project-card">, and add click handler if link exists
+      if (link) {
+        return `
+          <div class="project-card" role="button" onclick="window.location.href='${link}'">
+            ${cardInner}
+          </div>
+        `;
+      } else {
+        return `
+          <div class="project-card">
+            ${cardInner}
+          </div>
+        `;
+      }
+    };
+  
+    fetch("/data/projects.json")
+      .then(res => {
+        if (!res.ok) throw new Error("Failed to fetch project data");
+        return res.json();
+      })
+      .then(data => {
+        const container = document.getElementById("project-list");
+        const projects = Array.isArray(data.projects) ? data.projects : [];
+  
+        if (projects.length === 0) {
+          container.innerHTML = `<p><em>No projects found.</em></p>`;
+        } else {
+          container.innerHTML = projects.map(renderProjectCard).join("");
+        }
+      })
+      .catch(err => {
+        console.error("Error loading projects.json", err);
+        document.getElementById("project-list").innerHTML = `<p><em>Error loading project data.</em></p>`;
+      });
+  </script>
+  
+</body>
+</html>

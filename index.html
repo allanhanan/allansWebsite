@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Home | My Website</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka&family=Baloo+2&family=Chewy&display=swap" rel="stylesheet">
+
+  <link id="theme-css" rel="stylesheet" href="/themes/modern.css"/>
+  <script src="/commons/theme-toggle.js" defer></script>
+</head>
+
+<body>
+  <!-- Animated diagonal gradient background -->
+  <div class="bg-diagonal"></div>
+
+  <!-- Blur overlay when cards are revealed -->
+  <div class="blur-overlay"></div>
+
+  <!-- Hover zone on the right -->
+  <div class="hover-trigger"></div>
+  
+
+  <!-- Scroll container -->
+  <div class="sections">
+    <!-- Section 1: Full‑screen intro + nav cards -->
+    <section class="section intro visible">
+      <div class="hero-text">
+        <h1>WELCOME<br/>TO MYSITE</h1>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phallus elementum odio nec sus amongus.</p>
+      </div>
+
+      <div class="about-text">
+        <h2>ABOUT ME</h2>
+        <p>Im Allan Hanan! I make stuff.
+          <br>
+          ts soo tuff 📡📡📡
+          <br>
+          js sybau, ts pmo icl 💔🥀
+        </p>
+      </div>
+
+      <!-- Hover Cue Arrow -->
+      <div class="hover-cue">
+        <img width="32" height="32" src="https://img.icons8.com/puffy/64/curly-arrow.png" alt="arrow cue"/>
+        <span class="hover-text">hover!</span>
+      </div>
+
+
+
+      <!-- "Currently Working On" moved inside intro section -->
+      <div class="working-on" id="workingOn">
+        <h4>Loading...</h4>
+        <p>Please wait</p>
+      </div>
+    </section>
+
+    <!-- Section 2: Centered quote -->
+    <section class="section quote">
+      <p class="quote-text">“Obama Hamburger Sussy Balls.”</p>
+      <p class="author">— Kanye East</p>
+    </section>
+  </div>
+
+  <!-- Nav cards panel (entire card is clickable) -->
+  <div class="nav-cards">
+    <a href="/pages/music-games.html" class="card">
+      <h3>Music & Games</h3>
+      <p>Mid ahh beats and non existant games</p>
+    </a>
+    <a href="/pages/apps.html" class="card">
+      <h3>Apps & Projects</h3>
+      <p>Stuff I made</p>
+    </a>
+    <a href="/pages/blogs.html" class="card">
+      <h3>Blogs</h3>
+      <p>This aint gonna see the light of day</p>
+    </a>
+    <a href="/pages/about.html" class="card">
+      <h3>More about me</h3>
+      <p>Links and stuff</p>
+    </a>
+  </div>
+
+  <!-- Theme toggle -->
+  <div id="themeToggle" class="floating-theme-toggle">
+    <button onclick="switchTheme('modern')">Modern</button>
+    <button onclick="switchTheme('retro')">Retro</button>
+  </div>
+
+  <script>
+    const hoverZone = document.querySelector('.hover-trigger');
+    const navCards = document.querySelector('.nav-cards');
+    const blur = document.querySelector('.blur-overlay');
+    const themeToggle = document.getElementById('themeToggle');
+    const hoverCue = document.querySelector('.hover-cue'); // <- new cue ref
+  
+    let introVisible = false;
+    let hoveringCards = false;
+    let hoveringZone = false;
+  
+    // Track visibility of sections (especially .intro)
+    document.querySelectorAll('.section').forEach(sec => {
+      const obs = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+          if (e.target.classList.contains('intro')) {
+            introVisible = e.isIntersecting;
+  
+            if (!introVisible) {
+              hideCards();
+              themeToggle.style.display = 'none';
+              if (hoverCue) hoverCue.classList.add('hidden'); // hide cue when not visible
+            } else {
+              themeToggle.style.display = 'flex';
+            }
+          }
+  
+          if (e.isIntersecting) {
+            e.target.classList.add('visible');
+          }
+        });
+      }, { threshold: 0.5 });
+  
+      obs.observe(sec);
+    });
+  
+    // Hover logic for nav cards
+    hoverZone.addEventListener('mouseenter', () => {
+      hoveringZone = true;
+      showCards();
+    });
+  
+    hoverZone.addEventListener('mouseleave', () => {
+      hoveringZone = false;
+      checkHide();
+    });
+  
+    navCards.addEventListener('mouseenter', () => {
+      hoveringCards = true;
+    });
+  
+    navCards.addEventListener('mouseleave', () => {
+      hoveringCards = false;
+      checkHide();
+    });
+  
+    function showCards() {
+      if (!introVisible) return;
+      navCards.classList.add('revealed');
+      blur.classList.add('blurred');
+  
+      // Hide cue when interaction triggered
+      if (hoverCue) hoverCue.classList.add('hidden');
+    }
+  
+    function hideCards() {
+      navCards.classList.remove('revealed');
+      blur.classList.remove('blurred');
+    }
+  
+    function checkHide() {
+      setTimeout(() => {
+        if (!hoveringZone && !hoveringCards) {
+          hideCards();
+        }
+      }, 100);
+    }
+  </script>
+  
+
+  <!-- Scroll within cards section on arrow press -->
+  <script>
+    document.addEventListener("keydown", function (e) {
+      const activeSection = document.querySelector(".section:has(.card-grid)");
+      if (!activeSection) return;
+
+      const scrollAmount = 60;
+      if (e.key === "ArrowDown") {
+        activeSection.scrollBy({ top: scrollAmount, behavior: "smooth" });
+      } else if (e.key === "ArrowUp") {
+        activeSection.scrollBy({ top: -scrollAmount, behavior: "smooth" });
+      }
+    });
+  </script>
+<script>
+  const workingBox = document.getElementById('workingOn'); // Target the existing element
+  let rotateItems = [];
+  let rotateIndex = 0;
+
+  // Typewriter effect
+  function typeText(element, text, speed = 30, callback) {
+    element.textContent = '';
+    let i = 0;
+    function type() {
+      if (i < text.length) {
+        element.textContent += text.charAt(i);
+        i++;
+        setTimeout(type, speed);
+      } else if (callback) {
+        callback();
+      }
+    }
+    type();
+  }
+
+  // Refresh content
+  function updateWorkingBox() {
+    // Clear previous content
+    workingBox.innerHTML = '';
+
+    // Heading
+    const heading = document.createElement('h4');
+    heading.textContent = 'Currently Working On';
+    workingBox.appendChild(heading);
+
+    // Paragraph
+    const paragraph = document.createElement('p');
+    workingBox.appendChild(paragraph);
+
+    // Apply typewriter text
+    const currentText = rotateItems[rotateIndex];
+    typeText(paragraph, currentText, 35);
+  }
+
+  // Fetch and rotate
+  fetch('/data/current-work.json')
+    .then(res => res.json())
+    .then(data => {
+      rotateItems = data.items;
+      if (rotateItems.length > 0) {
+        updateWorkingBox();
+        setInterval(() => {
+          rotateIndex = (rotateIndex + 1) % rotateItems.length;
+          updateWorkingBox();
+        }, 4500);
+      }
+    })
+    .catch(err => {
+      workingBox.innerHTML = `
+        <h4>Error</h4>
+        <p>Couldn't load current work.</p>
+      `;
+      console.error('Failed to load /data/current-work.json:', err);
+    });
+</script>
+
+</body>
+</html>

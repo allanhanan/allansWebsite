@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>About Me</title>
+  <link rel="stylesheet" href="/styles/about.css" />
+</head>
+<body>
+  <div class="bg-diagonal"></div>
+  <header class="p-4 text-xl font-bold">
+    <button class="go-back-btn" onclick="history.back()">← Go Back</button>
+  </header>
+
+  <main>
+
+    <!-- 2-column top layout -->
+    <div class="top-split">
+      <!-- Left column -->
+      <section>
+        <h1 class="text-4xl font-bold mb-4">About Me</h1>
+        <p class="text-lg leading-relaxed">
+          Hi! Im Allan Hanan!
+          <br>
+          I like to make stuff. 
+          <br>
+          Primarily computer vision, AI automation, building apps, creating Discord bots, music production, and optimizing workflows. 
+          I also do game dev but thats... it'll come soon<br><br>
+          I'm constantly learning and finding new ways to automate tasks to make life easier and more efficient.
+        </p>
+      </section>
+  
+      <!-- Right column -->
+      <div class="right-stack">
+        <section class="fit-width">
+          <h2 class="text-2xl font-semibold mb-4">Social Links</h2>
+          <div class="social-buttons">
+            <a href="https://github.com/allanhanan" target="_blank" class="social-btn">GitHub</a>
+            <a href="https://www.linkedin.com/in/allanhanan/" target="_blank" class="social-btn">LinkedIn</a>
+            <a href="https://www.instagram.com/allanhanan/" target="_blank" class="social-btn">Instagram</a>
+          </div>
+        </section>
+        
+  
+        <section>
+          <h2 class="text-2xl font-semibold mb-2">Skills</h2>
+          <p>
+            Proficient in Python, C++, CUDA and LINUX!!! I have experience in machine learning frameworks like TensorFlow and PyTorch, 
+            as well as computer vision with OpenCV. I specialize in building efficient algorithms and optimizing workflows for performance.
+          </p>
+        </section>
+      </div>
+    </div>
+  
+    <!-- Bottom stacked layout -->
+    <div class="bottom-stack">
+      <section class="fit-width">
+        <h2 class="text-2xl font-semibold mb-2">Favorite Games</h2>
+        <ul class="space-y-1">
+          <li>Yakuza series</li>
+          <li>GTA: San Andreas</li>
+          <li>Persona</li>
+          <li>Undertale (wanna make a game like it soon)</li>
+          <li>Project Sekai</li>
+        </ul>
+      </section>
+      
+  
+      <section>
+        <h2 class="text-2xl font-semibold mb-2">Fun Facts</h2>
+        <ul class="space-y-1">
+          <li>C++ is superior. skill issue if you can't use it ( i use python mostly, still like c++ tho ).</li>
+          <li>I automate everything, including things that don’t need automation and would be much faster to do it normally instead of 
+            building an entire thing for hours.</li>
+          <li>Currently obsessed with optimizing workflow and efficiency for mundane routines.</li>
+          <li>Please switch to linux, we need more market share for devs to make games run on linux. Wine runs everything except kernel level anti cheat...
+            APEX Legends was working fine but EA decided to stop supporting it like why :sob:
+          </li>
+          <li>yes</li>
+          <li>i use nobara btw</li>
+        </ul>
+      </section>
+    </div>
+  
+  </main>
+  
+
+  <script>
+    // Vertical scroll within current section on down/up arrow
+    document.addEventListener("keydown", function (e) {
+      const activeSection = document.querySelector(".section:has(.card-grid)");
+      if (!activeSection) return;
+  
+      const scrollAmount = 60; // amount to scroll per press
+  
+      if (e.key === "ArrowDown") {
+        activeSection.scrollBy({ top: scrollAmount, behavior: "smooth" });
+      } else if (e.key === "ArrowUp") {
+        activeSection.scrollBy({ top: -scrollAmount, behavior: "smooth" });
+      }
+    });
+  </script>
+  
+</body>
+</html>

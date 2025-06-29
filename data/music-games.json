@@ -1,0 +1,22 @@
+{
+    "music": [
+      {
+        "id": "priceless",
+        "title": "Priceless console",
+        "description": "Lo-fi chillhop made for the game Priceless Meal by Kisetsu.",
+        "audio": "/media/Priceless.mp3",
+        "thumbnail": "/assets/priceless.jpg",
+        "link": "/pages/music/priceless.html"
+      }
+    ],
+    "games": [
+      {
+        "id": "placeholder-game",
+        "title": "Coming Soon",
+        "description": "A mysterious game in development...",
+        "thumbnail": "/assets/placeholder.png",
+        "link": "/pages/index.html"
+      }
+    ]
+  }
+  

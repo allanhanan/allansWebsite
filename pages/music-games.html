@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Music & Games</title>
+  <link rel="stylesheet" href="/styles/music-games.css" />
+</head>
+<body>
+    <div class="bg-diagonal"></div>
+
+  <!-- Page Title and Intro -->
+  <header class="page-header">
+    <h1>My Music & Games</h1>
+    <p>Trying my best to git gud.</p>
+  </header>
+
+  <div class="horizontal-scroll">
+    <!-- Music Section -->
+    <section class="section" id="music-section">
+      <h2>Music</h2>
+      <div class="card-grid" id="music-grid"></div>
+    </section>
+
+    <!-- Games Section -->
+    <section class="section" id="games-section">
+      <h2>Games</h2>
+      <div class="card-grid" id="games-grid"></div>
+    </section>
+  </div>
+
+  <script>
+    const fallbackThumb = "/assets/placeholder.png";
+    const fallbackAudioMessage = `<p><em>Audio unavailable</em></p>`;
+
+    const renderMusicCard = (track, index) => {
+  const title = track.title?.trim() || "Untitled";
+  const desc = track.description?.trim() || "No description available.";
+  const thumb = track.thumbnail?.trim() || fallbackThumb;
+  const audio = track.audio?.trim();
+  const link = track.link?.trim() || "#";
+
+  const wrapper = document.createElement("a");
+  wrapper.href = link;
+  wrapper.className = "mg-card";
+  wrapper.setAttribute("aria-label", `Music: ${title}`);
+
+  wrapper.innerHTML = `
+    <img src="${thumb}" alt="${title}" onerror="this.src='${fallbackThumb}'" />
+    <h3>${title}</h3>
+    <p>${desc}</p>
+    ${audio ? `
+      <audio controls>
+        <source src="${audio}" type="audio/mpeg">
+        Your browser does not support the audio element.
+      </audio>` : `<p><em>Audio unavailable</em></p>`}
+  `;
+
+  return wrapper;
+};
+
+const renderGameCard = (game, index) => {
+  const title = game.title?.trim() || "Untitled";
+  const desc = game.description?.trim() || "No description available.";
+  const thumb = game.thumbnail?.trim() || fallbackThumb;
+  const link = game.link?.trim() || "#";
+
+  const wrapper = document.createElement("a");
+  wrapper.href = link;
+  wrapper.className = "mg-card";
+  wrapper.setAttribute("aria-label", `Game: ${title}`);
+
+  wrapper.innerHTML = `
+    <img src="${thumb}" alt="${title}" onerror="this.src='${fallbackThumb}'" />
+    <h3>${title}</h3>
+    <p>${desc}</p>
+  `;
+
+  return wrapper;
+};
+
+
+    fetch('/data/music-games.json')
+      .then(res => {
+        if (!res.ok) throw new Error(`Failed to fetch JSON: ${res.status}`);
+        return res.json();
+      })
+      .then(data => {
+        console.log("Loaded JSON:", data);
+
+        const musicGrid = document.getElementById("music-grid");
+        const gamesGrid = document.getElementById("games-grid");
+
+        const music = Array.isArray(data.music) ? data.music : [];
+        const games = Array.isArray(data.games) ? data.games : [];
+
+        if (music.length === 0) {
+          musicGrid.innerHTML = `<p><em>No music found.</em></p>`;
+        } else {
+          music.forEach((track, i) => {
+            const card = renderMusicCard(track, i);
+            musicGrid.appendChild(card);
+          });
+        }
+
+        if (games.length === 0) {
+          gamesGrid.innerHTML = `<p><em>No games found.</em></p>`;
+        } else {
+          games.forEach((game, i) => {
+            const card = renderGameCard(game, i);
+            gamesGrid.appendChild(card);
+          });
+        }
+      })
+      .catch(err => {
+        console.error("Error loading JSON:", err);
+        document.getElementById("music-grid").innerHTML = `<p><em>Error loading music.</em></p>`;
+        document.getElementById("games-grid").innerHTML = `<p><em>Error loading games.</em></p>`;
+      });
+  </script>
+
+  <script>
+    // Horizontal section scroll with arrow keys
+    document.addEventListener("keydown", function (e) {
+      const scrollContainer = document.querySelector(".horizontal-scroll");
+      const scrollAmount = window.innerWidth;
+
+      if (e.key === "ArrowRight") {
+        scrollContainer.scrollBy({ left: scrollAmount, behavior: "smooth" });
+      } else if (e.key === "ArrowLeft") {
+        scrollContainer.scrollBy({ left: -scrollAmount, behavior: "smooth" });
+      }
+    });
+  </script>
+
+<a href="/index.html" class="floating-back-button" aria-label="Go to homepage">🏠</a>
+
+
+</body>
+</html>

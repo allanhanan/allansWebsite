@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Priceless Console – Music</title>
+  <link rel="stylesheet" href="/themes/modern.css" />
+  <link rel="stylesheet" href="/styles/music-track.css" />
+</head>
+<body>
+    <div class="bg-diagonal"></div>
+    <button class="go-back-btn" onclick="history.back()">← Go Back</button>
+
+
+  <main class="track-container">
+    <section class="track-info">
+      <img src="/assets/priceless.jpg" alt="Priceless Console Cover" class="track-thumb"/>
+
+      <div class="track-meta">
+        <h1>Priceless Console</h1>
+        <p class="description">
+          Lo-fi chillhop bgm made for the game <a href="https://kisetsu-07.itch.io/priceless-meal" target="_blank">Priceless Meal</a> by Kisetsu. 
+          <br>
+          Check it out!
+          <br><br>
+          (ik the drums sucks cheeks but idk it is what it is)
+        </p>
+        <audio controls>
+          <source src="/media/Priceless.mp3" type="audio/mpeg" />
+          Your browser does not support the audio element.
+        </audio>
+        <a href="/media/Priceless.mp3" download class="download-btn">⬇ Download</a>
+      </div>
+    </section>
+
+    <section class="comments">
+      <h2>Comments</h2>
+      <div id="giscus_container"></div>
+    </section>
+  </main>
+
+  <!-- add Giscus here later -->
+</body>
+</html>
