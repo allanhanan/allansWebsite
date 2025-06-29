@@ -64,19 +64,19 @@
 
   <!-- Nav cards panel (entire card is clickable) -->
   <div class="nav-cards">
-    <a href="/pages/music-games.html" class="card">
+    <a href="pages/music-games.html" class="card">
       <h3>Music & Games</h3>
       <p>Mid ahh beats and non existant games</p>
     </a>
-    <a href="/pages/apps.html" class="card">
+    <a href="pages/apps.html" class="card">
       <h3>Apps & Projects</h3>
       <p>Stuff I made</p>
     </a>
-    <a href="/pages/blogs.html" class="card">
+    <a href="pages/blogs.html" class="card">
       <h3>Blogs</h3>
       <p>This aint gonna see the light of day</p>
     </a>
-    <a href="/pages/about.html" class="card">
+    <a href="pages/about.html" class="card">
       <h3>More about me</h3>
       <p>Links and stuff</p>
     </a>
@@ -223,7 +223,7 @@
   }
 
   // Fetch and rotate
-  fetch('/data/current-work.json')
+  fetch('data/current-work.json')
     .then(res => res.json())
     .then(data => {
       rotateItems = data.items;
@@ -240,7 +240,7 @@
         <h4>Error</h4>
         <p>Couldn't load current work.</p>
       `;
-      console.error('Failed to load /data/current-work.json:', err);
+      console.error('Failed to load data/current-work.json:', err);
     });
 </script>
 
