@@ -1,5 +1,5 @@
 # allansWebsite
 personal website without stolen assets !!!
-allanhanan.pages.dev
+https://allanhanan.pages.dev
 
 (the github pages one is defunct)
